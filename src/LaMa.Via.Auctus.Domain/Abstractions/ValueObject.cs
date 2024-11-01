@@ -19,7 +19,7 @@ public abstract class ValueObject : IEquatable<ValueObject>
         return currentValues.SequenceEqual(otherValues);
     }
 
-    protected abstract IEnumerable<object> GetEqualityValues();
+    protected abstract IEnumerable<object?> GetEqualityValues();
 
     public override bool Equals(object? obj)
     {
