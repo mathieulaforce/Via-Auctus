@@ -1,4 +1,6 @@
-﻿using LaMa.Via.Auctus.Domain.Abstractions;
+﻿using ErrorOr;
+using LaMa.Via.Auctus.Domain.Abstractions;
+using LaMa.Via.Auctus.Domain.CarManagement.Errors;
 using LaMa.Via.Auctus.Domain.CarManagement.Events;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
@@ -46,37 +48,58 @@ public class Car : AggregateRoot<CarId, Guid>
     public Engine Engine { get; private set; }
     public CarRegistration? Registration { get; private set; }
 
-    public void Register(string licensePlate, DateOnly firstRegistration, DateOnly registrationExpiry)
+    public ErrorOr<Success> Register(string licensePlate, DateOnly firstRegistration, DateOnly registrationExpiry)
     {
         if (Registration != null)
         {
-            throw new Exception("Car is already registered");
+            return CarErrors.CarAlreadyRegistered(Id);
         }
-        Registration = CarRegistration.Create(licensePlate, firstRegistration, registrationExpiry);
+
+        var registrationResult = CarRegistration.Create(licensePlate, firstRegistration, registrationExpiry);
+        if (registrationResult.IsError)
+        {
+            return registrationResult.Errors;
+        }
+
+        Registration = registrationResult.Value;
         RaiseDomainEvent(new CarRegisteredDomainEvent(Id));
+        return Result.Success;
     }
 
-    public static Car Create(CarBrand brand, CarModel model, CarModelVersion version, Engine engine,
+    public static ErrorOr<Car> Create(CarBrand brand, CarModel model, CarModelVersion version, Engine engine,
         CarRegistration? registration)
     {
-        if (model.CarBrandId != brand.Id)
+        var errors = ValidateCreateCar(brand, model, version, engine);
+        if (errors.HasErrors)
         {
-            throw new ArgumentException($"Brand id '{brand.Id.Value}' does not support model id'{model.Id.Value}'");
-        }
-
-        if (version.CarModelId != model.Id)
-        {
-            throw new ArgumentException($"model id '{model.Id.Value}' does not support version id'{version.Id.Value}'");
-        }
-
-        if (!version.HasEngine(engine))
-        {
-            throw new ArgumentException($"Version '{version.Id.Value}' does not support engine: '{engine.Id.Value}'");
+            return errors;
         }
 
         var carId = CarId.CreateUnique();
         var car = new Car(carId, brand, model, version, engine, registration);
         car.RaiseDomainEvent(new CarCreatedDomainEvent(carId));
         return car;
+    }
+
+    private static ErrorCollection ValidateCreateCar(CarBrand brand, CarModel model, CarModelVersion version,
+        Engine engine)
+    {
+        var errors = new ErrorCollection();
+        if (model.CarBrandId != brand.Id)
+        {
+            errors += CarErrors.CarBrandDoesNotSupportModel(brand.Id, model.Id);
+        }
+
+        if (version.CarModelId != model.Id)
+        {
+            errors += CarErrors.CarModelDoesNotSupportVersion(brand.Id, model.Id, version.Id);
+        }
+
+        if (!version.HasEngine(engine))
+        {
+            errors += CarErrors.CarVersionDoesNotSupportEngine(brand.Id, model.Id, version.Id, engine.Id);
+        }
+
+        return errors;
     }
 }

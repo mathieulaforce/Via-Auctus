@@ -5,6 +5,7 @@ public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>, IHasDomainE
 {
     private readonly List<IDomainEvent> _domainEvents = new();
     public TId Id { get; } = id;
+
     public bool Equals(Entity<TId>? other)
     {
         return Equals((object?)other);
@@ -29,7 +30,7 @@ public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>, IHasDomainE
     {
         return Id.GetHashCode();
     }
-     
+
     public IReadOnlyList<IDomainEvent> GetDomainEvents()
     {
         return _domainEvents.AsReadOnly();

@@ -42,20 +42,24 @@ public class Engine : Entity<EngineId>
 
     public string Name { get; }
     public FuelType FuelType { get; }
+
     /// <summary>
     /// hp
     /// </summary>
     public int? HorsePower { get; }
+
     /// <summary>
     /// Nm
     /// </summary>
     public int? Torque { get; }
+
     /// <summary>
     /// L/100KM or wh/km, requires value objects
     /// </summary>
     public EngineEfficiency Efficiency { get; }
 
-    public static Engine Create(string name, FuelType fuelType, int? horsePower, int? torque, EngineEfficiency efficiency)
+    public static Engine Create(string name, FuelType fuelType, int? horsePower, int? torque,
+        EngineEfficiency efficiency)
     {
         var id = EngineId.CreateUnique();
         var engine = new Engine(id, name, fuelType, horsePower, torque, efficiency);

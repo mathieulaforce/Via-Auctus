@@ -18,6 +18,18 @@ public class EnginesTests
     }
     
     [Fact]
+    public void GivenNewEngineWhenAddWithParametersThenAddsEngine()
+    {
+        var engines = Engines.Empty;
+        var engine = EngineObjectMother.UnknownElectricEngine;
+        
+        engines.AddEngine(engine.Name, engine.FuelType, engine.HorsePower,engine.Torque,engine.Efficiency);
+        
+        engines.Should().NotBeEmpty();
+        engines.Should().ContainSingle(e => e.Name == engine.Name && e.FuelType == engine.FuelType && e.HorsePower == engine.HorsePower && e.Torque == engine.Torque && e.Efficiency == engine.Efficiency);
+    }
+    
+    [Fact]
     public void GivenEmptyListContainsNoEngine()
     {
         var engines = Engines.Empty;
@@ -31,7 +43,7 @@ public class EnginesTests
         var engine = EngineObjectMother.UnknownElectricEngine;
         engines.AddEngine(engine);
         
-        var otherEngine = Engine.Create("ABC", FuelType.Create("hybrid"), 1, 2, EngineEfficiency.LPer100Km(8.4m));
+        var otherEngine = Engine.Create("ABC", FuelType.Create("hybrid").Value, 1, 2, EngineEfficiency.LPer100Km(8.4m));
         
         engines.Contains(otherEngine).Should().BeFalse();
         engines.Contains(otherEngine.Id).Should().BeFalse();

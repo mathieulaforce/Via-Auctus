@@ -4,6 +4,7 @@ public sealed record EngineEfficiency
 {
     public decimal Value { get; private set; }
     public string Unit { get; private set; }
+
     private EngineEfficiency(decimal value, string unit)
     {
         Value = value;
@@ -11,16 +12,16 @@ public sealed record EngineEfficiency
     }
 
     public bool IsUnknown => Value == 0 && string.IsNullOrEmpty(Unit);
-    
+
     public static EngineEfficiency Unknown => new(0, string.Empty);
 
     public static EngineEfficiency LPer100Km(decimal value)
     {
-        return new(value, "L/100km"); 
+        return new EngineEfficiency(value, "L/100km");
     }
-    
+
     public static EngineEfficiency WhPerKm(decimal value)
     {
-        return new(value, "Wh/km"); 
+        return new EngineEfficiency(value, "Wh/km");
     }
 }

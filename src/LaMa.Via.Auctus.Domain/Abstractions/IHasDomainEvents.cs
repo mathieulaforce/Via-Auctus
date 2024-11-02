@@ -2,6 +2,6 @@
 
 public interface IHasDomainEvents
 {
-    public IReadOnlyList<IDomainEvent> GetDomainEvents(); 
+    public IReadOnlyList<IDomainEvent> GetDomainEvents();
     public void ClearDomainEvents();
 }
