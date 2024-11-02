@@ -1,4 +1,5 @@
 ﻿using LaMa.Via.Auctus.Domain.Abstractions;
+using LaMa.Via.Auctus.Domain.CarManagement.Events;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
@@ -30,7 +31,7 @@ public class EngineId : AggregateRootId<Guid>
 public class Engine : Entity<EngineId>
 {
     private Engine(EngineId id, string name, FuelType fuelType, int? horsePower, int? torque,
-        decimal? efficiency) : base(id)
+        EngineEfficiency efficiency) : base(id)
     {
         Name = name;
         FuelType = fuelType;
@@ -41,13 +42,24 @@ public class Engine : Entity<EngineId>
 
     public string Name { get; }
     public FuelType FuelType { get; }
+    /// <summary>
+    /// hp
+    /// </summary>
     public int? HorsePower { get; }
+    /// <summary>
+    /// Nm
+    /// </summary>
     public int? Torque { get; }
-    public decimal? Efficiency { get; }
+    /// <summary>
+    /// L/100KM or wh/km, requires value objects
+    /// </summary>
+    public EngineEfficiency Efficiency { get; }
 
-    public static Engine Create(string name, FuelType fuelType, int? horsePower, int? torque, decimal? efficiency)
+    public static Engine Create(string name, FuelType fuelType, int? horsePower, int? torque, EngineEfficiency efficiency)
     {
         var id = EngineId.CreateUnique();
-        return new Engine(id, name, fuelType, horsePower, torque, efficiency);
+        var engine = new Engine(id, name, fuelType, horsePower, torque, efficiency);
+        engine.RaiseDomainEvent(new EngineCreatedDomainEvent(engine.Id));
+        return engine;
     }
 }

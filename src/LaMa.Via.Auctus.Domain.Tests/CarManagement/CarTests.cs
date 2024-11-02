@@ -1,6 +1,8 @@
 ﻿using LaMa.Via.Auctus.Domain.CarManagement;
+using LaMa.Via.Auctus.Domain.CarManagement.Events;
 using LaMa.Via.Auctus.Domain.Shared;
 using LaMa.Via.Auctus.Domain.Tests.CarManagement.ObjectMothers;
+using LaMa.Via.Auctus.Domain.Tests.Helpers;
 
 namespace LaMa.Via.Auctus.Domain.Tests.CarManagement;
 
@@ -57,7 +59,9 @@ public class CarTests
 
         var teslaModelY = Car.Create(tesla, modelY, version, engine, registration);
 
+        var carCreatedEvent = teslaModelY.ContainsOneDomainEventOfType<CarCreatedDomainEvent>();
         teslaModelY.Id.Value.Should().NotBeEmpty();
+        teslaModelY.Id.Should().Be(carCreatedEvent.CarId);
         //Brand
         teslaModelY.Brand.Id.Value.Should().NotBeEmpty();
         teslaModelY.Brand.Name.Should().Be("Tesla");
@@ -70,7 +74,7 @@ public class CarTests
         teslaModelY.Engine.Id.Value.Should().NotBeEmpty();
         teslaModelY.Engine.Name.Should().Be("Unknown");
         teslaModelY.Engine.FuelType.Should().Be(EngineObjectMother.UnknownElectricEngine.FuelType);
-        teslaModelY.Engine.Efficiency.Should().BeNull();
+        teslaModelY.Engine.Efficiency.IsUnknown.Should().BeTrue();
         teslaModelY.Engine.HorsePower.Should().BeNull();
         teslaModelY.Engine.Torque.Should().BeNull();
         //Version
@@ -93,6 +97,8 @@ public class CarTests
         car.Register(registration.LicensePlate, registration.FirstRegistrationDate,registration.RegistrationExpiryDate);
 
         car.Registration.Should().Be(registration);
+        var domainEvent = car.ContainsOneDomainEventOfType<CarRegisteredDomainEvent>();
+        domainEvent.CarId.Should().Be(car.Id);
     }
 
     [Fact]

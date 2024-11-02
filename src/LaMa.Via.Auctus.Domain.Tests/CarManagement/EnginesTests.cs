@@ -31,12 +31,12 @@ public class EnginesTests
         var engine = EngineObjectMother.UnknownElectricEngine;
         engines.AddEngine(engine);
         
-        var otherEngine = Engine.Create("ABC", FuelType.Create("hybrid"), 1, 2, 3);
+        var otherEngine = Engine.Create("ABC", FuelType.Create("hybrid"), 1, 2, EngineEfficiency.LPer100Km(8.4m));
         
         engines.Contains(otherEngine).Should().BeFalse();
         engines.Contains(otherEngine.Id).Should().BeFalse();
         engines.CanAddEngine(otherEngine).Should().BeTrue();
-        engines.CanAddEngine(otherEngine.Name ,otherEngine.FuelType,otherEngine.HorsePower, otherEngine.Torque,otherEngine.Efficiency ).Should().BeTrue();
+        engines.CanAddEngine(otherEngine.Name ,otherEngine.FuelType,otherEngine.HorsePower, otherEngine.Torque,otherEngine.Efficiency).Should().BeTrue();
     }
     
     [Fact]
@@ -50,8 +50,7 @@ public class EnginesTests
         engines.CanAddEngine(engine).Should().BeFalse();
         engines.Contains(engine).Should().BeTrue();
         engines.Contains(engine.Id).Should().BeTrue();
-        engines.CanAddEngine(engine.Name ,engine.FuelType,engine.HorsePower, engine.Torque,engine.Efficiency ).Should().BeFalse();
+        engines.CanAddEngine(engine.Name ,engine.FuelType,engine.HorsePower, engine.Torque,engine.Efficiency).Should().BeFalse();
         action.Should().Throw<Exception>(); 
-    }
- 
+    } 
 }

@@ -1,4 +1,5 @@
 ﻿using LaMa.Via.Auctus.Domain.Abstractions;
+using LaMa.Via.Auctus.Domain.CarManagement.Events;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
@@ -47,7 +48,12 @@ public class Car : AggregateRoot<CarId, Guid>
 
     public void Register(string licensePlate, DateOnly firstRegistration, DateOnly registrationExpiry)
     {
+        if (Registration != null)
+        {
+            throw new Exception("Car is already registered");
+        }
         Registration = CarRegistration.Create(licensePlate, firstRegistration, registrationExpiry);
+        RaiseDomainEvent(new CarRegisteredDomainEvent(Id));
     }
 
     public static Car Create(CarBrand brand, CarModel model, CarModelVersion version, Engine engine,
@@ -69,6 +75,8 @@ public class Car : AggregateRoot<CarId, Guid>
         }
 
         var carId = CarId.CreateUnique();
-        return new Car(carId, brand, model, version, engine, registration);
+        var car = new Car(carId, brand, model, version, engine, registration);
+        car.RaiseDomainEvent(new CarCreatedDomainEvent(carId));
+        return car;
     }
 }
