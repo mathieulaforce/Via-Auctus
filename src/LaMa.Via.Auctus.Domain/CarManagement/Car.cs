@@ -13,7 +13,7 @@ public sealed record CarId : AggregateRootId<Guid>
     }
 
     public override Guid Value { get; protected set; }
- 
+
     public static CarId CreateUnique()
     {
         return new CarId(UniqueIdGenerator.Generate());
@@ -67,7 +67,7 @@ public class Car : AggregateRoot<CarId, Guid>
         var errors = ValidateCreateCar(brand, model, version, engine);
         if (errors.HasErrors)
         {
-            return errors;
+            return errors.ToList();
         }
 
         var carId = CarId.CreateUnique();

@@ -11,6 +11,7 @@ public sealed record SvgImage
 
     public static SvgImage Create(string url)
     {
+        // TODO result pattern
         if (string.IsNullOrWhiteSpace(url))
         {
             throw new ArgumentNullException(nameof(url));

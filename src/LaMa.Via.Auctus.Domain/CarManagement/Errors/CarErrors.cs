@@ -11,10 +11,11 @@ public static class CarErrors
             "The car is already registered",
             new Dictionary<string, object>
             {
-                { "Id", carId },
+                { "Id", carId }
             }
         );
     }
+
     public static Error CarBrandDoesNotSupportModel(CarBrandId brandId, CarModelId modelId)
     {
         return Error.Validation(

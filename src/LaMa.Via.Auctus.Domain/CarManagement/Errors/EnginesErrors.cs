@@ -2,7 +2,7 @@
 
 namespace LaMa.Via.Auctus.Domain.CarManagement.Errors;
 
-public class EnginesErrors
+public static class EnginesErrors
 {
     public static Error EngineAlreadyRegistered(EngineId engineId, string name)
     {

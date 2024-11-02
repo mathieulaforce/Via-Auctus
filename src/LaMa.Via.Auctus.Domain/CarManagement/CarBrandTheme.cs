@@ -1,4 +1,5 @@
-﻿using LaMa.Via.Auctus.Domain.Shared;
+﻿using ErrorOr;
+using LaMa.Via.Auctus.Domain.Shared;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
@@ -21,5 +22,14 @@ public sealed record CarBrandTheme
         SvgImage logo)
     {
         return new CarBrandTheme(primaryColor, secondaryColor, fontFamily, logo);
+    }
+
+    public static ErrorOr<CarBrandTheme> Create(string primaryColor, string? secondaryColor, string fontFamily,
+        string svgLogo)
+    {
+        var primary = CssColor.Create(primaryColor);
+        var secondary = string.IsNullOrWhiteSpace(secondaryColor) ? null : CssColor.Create(secondaryColor);
+        var logo = SvgImage.Create(svgLogo);
+        return Create(primary, secondary, fontFamily, logo);
     }
 }

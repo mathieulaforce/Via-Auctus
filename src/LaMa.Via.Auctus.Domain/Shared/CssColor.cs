@@ -47,6 +47,7 @@ public sealed record CssColor
 
     public static CssColor Create(string code)
     {
+        //TODO result pattern
         if (CanCreate(code))
         {
             return new CssColor(code);

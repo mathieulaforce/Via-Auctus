@@ -11,7 +11,7 @@ public sealed record CarModelId
     }
 
     public Guid Value { get; }
- 
+
     public static CarModelId CreateUnique()
     {
         return new CarModelId(UniqueIdGenerator.Generate());

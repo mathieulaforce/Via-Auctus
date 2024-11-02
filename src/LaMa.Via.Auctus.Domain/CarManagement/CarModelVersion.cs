@@ -20,12 +20,12 @@ public sealed record CarModelVersionId : AggregateRootId<Guid>
     public static CarModelVersionId Create(Guid value)
     {
         return new CarModelVersionId(value);
-    } 
+    }
 }
 
 public sealed class CarModelVersion : AggregateRoot<CarModelVersionId, Guid>
 {
-    protected CarModelVersion(CarModelVersionId id, CarModelId carModelId, string name, int year,
+    private CarModelVersion(CarModelVersionId id, CarModelId carModelId, string name, int year,
         Engines engines,
         SupportedImage? image) : base(id)
     {
