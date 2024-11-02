@@ -1,4 +1,6 @@
-﻿using LaMa.Via.Auctus.Domain.Abstractions;
+﻿using ErrorOr;
+using LaMa.Via.Auctus.Domain.Abstractions;
+using LaMa.Via.Auctus.Domain.CarManagement.Errors;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
@@ -9,11 +11,13 @@ public class FuelType : Entity<string>
     {
     }
 
-    public static FuelType Create(string type)
+    public string Value => Id;
+
+    public static ErrorOr<FuelType> Create(string type)
     {
         if (string.IsNullOrWhiteSpace(type))
         {
-            throw new ArgumentNullException(nameof(FuelType));
+            return FuelTypeErrors.EmptyFuelType();
         }
 
         return new FuelType(type);

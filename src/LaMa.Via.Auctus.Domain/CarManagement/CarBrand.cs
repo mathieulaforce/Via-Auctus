@@ -1,8 +1,9 @@
 ﻿using LaMa.Via.Auctus.Domain.Abstractions;
+using LaMa.Via.Auctus.Domain.CarManagement.Events;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
-public class CarBrandId : ValueObject
+public sealed record CarBrandId 
 {
     private CarBrandId(Guid id)
     {
@@ -10,12 +11,7 @@ public class CarBrandId : ValueObject
     }
 
     public Guid Value { get; }
-
-    protected override IEnumerable<object> GetEqualityValues()
-    {
-        yield return Value;
-    }
-
+ 
     public static CarBrandId CreateUnique()
     {
         return new CarBrandId(UniqueIdGenerator.Generate());
@@ -42,7 +38,9 @@ public class CarBrand : Entity<CarBrandId>
     public static CarBrand Create(string name, CarBrandTheme theme)
     {
         var id = CarBrandId.CreateUnique();
-        return new CarBrand(id, name, theme);
+        var brand = new CarBrand(id, name, theme);
+        brand.RaiseDomainEvent(new CarBrandCreatedDomainEvent(brand.Id));
+        return brand;
     }
 
     public void UpdateTheme(CarBrandTheme theme)

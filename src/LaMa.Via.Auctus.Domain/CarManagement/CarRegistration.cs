@@ -1,4 +1,8 @@
-﻿namespace LaMa.Via.Auctus.Domain.CarManagement;
+﻿using ErrorOr;
+using LaMa.Via.Auctus.Domain.Abstractions;
+using LaMa.Via.Auctus.Domain.CarManagement.Errors;
+
+namespace LaMa.Via.Auctus.Domain.CarManagement;
 
 public sealed record CarRegistration
 {
@@ -13,19 +17,33 @@ public sealed record CarRegistration
     public DateOnly FirstRegistrationDate { get; private set; }
     public DateOnly RegistrationExpiryDate { get; private set; }
 
-    public static CarRegistration Create(string licensePlate, DateOnly firstRegistrationDate,
+    public static ErrorOr<CarRegistration> Create(string licensePlate, DateOnly firstRegistrationDate,
         DateOnly registrationExpiryDate)
     {
+        var errors = ValidateCarRegistration(licensePlate, firstRegistrationDate, registrationExpiryDate);
+
+        if (errors.HasErrors)
+        {
+            return errors;
+        }
+
+        return new CarRegistration(licensePlate, firstRegistrationDate, registrationExpiryDate);
+    }
+
+    private static ErrorCollection ValidateCarRegistration(string licensePlate, DateOnly firstRegistrationDate,
+        DateOnly registrationExpiryDate)
+    {
+        var errors = new ErrorCollection();
         if (string.IsNullOrWhiteSpace(licensePlate))
         {
-            throw new ArgumentNullException(nameof(licensePlate));
+            errors += CarRegistrationErrors.EmptyLicensePlate();
         }
 
         if (firstRegistrationDate >= registrationExpiryDate)
         {
-            throw new ArgumentException("First registration date must be greater than registration expiry");
+            errors += CarRegistrationErrors.FirstRegistrationDateAfterExpiryDate(firstRegistrationDate, registrationExpiryDate);
         }
 
-        return new CarRegistration(licensePlate, firstRegistrationDate, registrationExpiryDate);
+        return errors;
     }
 }

@@ -1,8 +1,11 @@
-﻿using LaMa.Via.Auctus.Domain.Abstractions;
+﻿using ErrorOr;
+using LaMa.Via.Auctus.Domain.Abstractions;
+using LaMa.Via.Auctus.Domain.CarManagement.Errors;
+using LaMa.Via.Auctus.Domain.CarManagement.Events;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
-public sealed class CarId : AggregateRootId<Guid>
+public sealed record CarId : AggregateRootId<Guid>
 {
     private CarId(Guid value)
     {
@@ -10,12 +13,7 @@ public sealed class CarId : AggregateRootId<Guid>
     }
 
     public override Guid Value { get; protected set; }
-
-    protected override IEnumerable<object?> GetEqualityValues()
-    {
-        yield return Value;
-    }
-
+ 
     public static CarId CreateUnique()
     {
         return new CarId(UniqueIdGenerator.Generate());
@@ -45,30 +43,58 @@ public class Car : AggregateRoot<CarId, Guid>
     public Engine Engine { get; private set; }
     public CarRegistration? Registration { get; private set; }
 
-    public void Register(string licensePlate, DateOnly firstRegistration, DateOnly registrationExpiry)
+    public ErrorOr<Success> Register(string licensePlate, DateOnly firstRegistration, DateOnly registrationExpiry)
     {
-        Registration = CarRegistration.Create(licensePlate, firstRegistration, registrationExpiry);
+        if (Registration != null)
+        {
+            return CarErrors.CarAlreadyRegistered(Id);
+        }
+
+        var registrationResult = CarRegistration.Create(licensePlate, firstRegistration, registrationExpiry);
+        if (registrationResult.IsError)
+        {
+            return registrationResult.Errors;
+        }
+
+        Registration = registrationResult.Value;
+        RaiseDomainEvent(new CarRegisteredDomainEvent(Id));
+        return Result.Success;
     }
 
-    public static Car Create(CarBrand brand, CarModel model, CarModelVersion version, Engine engine,
+    public static ErrorOr<Car> Create(CarBrand brand, CarModel model, CarModelVersion version, Engine engine,
         CarRegistration? registration)
     {
+        var errors = ValidateCreateCar(brand, model, version, engine);
+        if (errors.HasErrors)
+        {
+            return errors;
+        }
+
+        var carId = CarId.CreateUnique();
+        var car = new Car(carId, brand, model, version, engine, registration);
+        car.RaiseDomainEvent(new CarCreatedDomainEvent(carId));
+        return car;
+    }
+
+    private static ErrorCollection ValidateCreateCar(CarBrand brand, CarModel model, CarModelVersion version,
+        Engine engine)
+    {
+        var errors = new ErrorCollection();
         if (model.CarBrandId != brand.Id)
         {
-            throw new ArgumentException($"Brand id '{brand.Id.Value}' does not support model id'{model.Id.Value}'");
+            errors += CarErrors.CarBrandDoesNotSupportModel(brand.Id, model.Id);
         }
 
         if (version.CarModelId != model.Id)
         {
-            throw new ArgumentException($"model id '{model.Id.Value}' does not support version id'{version.Id.Value}'");
+            errors += CarErrors.CarModelDoesNotSupportVersion(brand.Id, model.Id, version.Id);
         }
 
         if (!version.HasEngine(engine))
         {
-            throw new ArgumentException($"Version '{version.Id.Value}' does not support engine: '{engine.Id.Value}'");
+            errors += CarErrors.CarVersionDoesNotSupportEngine(brand.Id, model.Id, version.Id, engine.Id);
         }
 
-        var carId = CarId.CreateUnique();
-        return new Car(carId, brand, model, version, engine, registration);
+        return errors;
     }
 }

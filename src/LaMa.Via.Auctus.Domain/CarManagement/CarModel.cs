@@ -3,7 +3,7 @@ using LaMa.Via.Auctus.Domain.Shared;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
-public class CarModelId : ValueObject
+public sealed record CarModelId
 {
     private CarModelId(Guid id)
     {
@@ -11,12 +11,7 @@ public class CarModelId : ValueObject
     }
 
     public Guid Value { get; }
-
-    protected override IEnumerable<object> GetEqualityValues()
-    {
-        yield return Value;
-    }
-
+ 
     public static CarModelId CreateUnique()
     {
         return new CarModelId(UniqueIdGenerator.Generate());

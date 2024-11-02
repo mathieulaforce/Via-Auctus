@@ -6,13 +6,13 @@ public class Engines : EntityCollection<Engine, EngineId>
 {
     public static Engines Empty => new();
 
-    public bool CanAddEngine(string name, FuelType fuelType, int? horsePower, int? torque, decimal? efficiency)
+    public bool CanAddEngine(string name, FuelType fuelType, int? horsePower, int? torque, EngineEfficiency efficiency)
     {
         var engine = Engine.Create(name, fuelType, horsePower, torque, efficiency);
         return CanAddEngine(engine);
     }
 
-    public Engines AddEngine(string name, FuelType fuelType, int? horsePower, int? torque, decimal? efficiency)
+    public Engines AddEngine(string name, FuelType fuelType, int? horsePower, int? torque, EngineEfficiency efficiency)
     {
         var engine = Engine.Create(name, fuelType, horsePower, torque, efficiency);
         AddEngine(engine);

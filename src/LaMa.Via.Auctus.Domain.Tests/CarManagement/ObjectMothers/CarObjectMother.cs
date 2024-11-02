@@ -13,7 +13,7 @@ public class CarObjectMother
         engines.AddEngine(engine);
         var version = CarModelVersion.Create(modelY.Id, "Long Range All-Wheel Drive", 2024, engines, null);
         var teslaModelY = Car.Create(tesla, modelY, version, engine, null);
-        return teslaModelY;
+        return teslaModelY.Value;
     }
 
     public static Car RegisteredTeslaModelYAllWheelDrive()
@@ -25,7 +25,7 @@ public class CarObjectMother
         engines.AddEngine(engine);
         var version = CarModelVersion.Create(modelY.Id, "Long Range All-Wheel Drive", 2024, engines, null);
         var registration = CarRegistration.Create("1-ABC-234", new DateOnly(2024, 11, 1), new DateOnly(2028, 11, 1));
-        var teslaModelY = Car.Create(tesla, modelY, version, engine, registration);
-        return teslaModelY;
+        var teslaModelY = Car.Create(tesla, modelY, version, engine, registration.Value);
+        return teslaModelY.Value;
     }
 }
