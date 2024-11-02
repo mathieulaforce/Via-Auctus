@@ -3,7 +3,7 @@ using LaMa.Via.Auctus.Domain.Shared;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
-public sealed class CarModelVersionId : AggregateRootId<Guid>
+public sealed record CarModelVersionId : AggregateRootId<Guid>
 {
     private CarModelVersionId(Guid id)
     {
@@ -20,12 +20,7 @@ public sealed class CarModelVersionId : AggregateRootId<Guid>
     public static CarModelVersionId Create(Guid value)
     {
         return new CarModelVersionId(value);
-    }
-
-    protected override IEnumerable<object> GetEqualityValues()
-    {
-        yield return Value;
-    }
+    } 
 }
 
 public sealed class CarModelVersion : AggregateRoot<CarModelVersionId, Guid>

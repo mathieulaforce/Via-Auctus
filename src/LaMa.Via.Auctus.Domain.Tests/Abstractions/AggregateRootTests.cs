@@ -30,14 +30,9 @@ public class AggregateRootTests
         sut1.Id.Should().NotBe(sut2.Id);
     }
 
-    private class SutAggregateRootId(Guid value) : AggregateRootId<Guid>
+    private record SutAggregateRootId(Guid value) : AggregateRootId<Guid>
     {
-        public sealed override Guid Value { get; protected set; } = value;
-
-        protected override IEnumerable<object> GetEqualityValues()
-        {
-            yield return Value;
-        }
+        public sealed override Guid Value { get; protected set; } = value; 
     }
 
     private class SutAggregateRoot(SutAggregateRootId id, string name) : AggregateRoot<SutAggregateRootId, Guid>(id)

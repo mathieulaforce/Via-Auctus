@@ -5,7 +5,7 @@ using LaMa.Via.Auctus.Domain.CarManagement.Events;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
-public sealed class CarId : AggregateRootId<Guid>
+public sealed record CarId : AggregateRootId<Guid>
 {
     private CarId(Guid value)
     {
@@ -13,12 +13,7 @@ public sealed class CarId : AggregateRootId<Guid>
     }
 
     public override Guid Value { get; protected set; }
-
-    protected override IEnumerable<object?> GetEqualityValues()
-    {
-        yield return Value;
-    }
-
+ 
     public static CarId CreateUnique()
     {
         return new CarId(UniqueIdGenerator.Generate());

@@ -3,7 +3,7 @@ using LaMa.Via.Auctus.Domain.CarManagement.Events;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
-public class EngineId : AggregateRootId<Guid>
+public sealed record EngineId : AggregateRootId<Guid>
 {
     private EngineId(Guid id)
     {
@@ -20,12 +20,7 @@ public class EngineId : AggregateRootId<Guid>
     public static EngineId Create(Guid value)
     {
         return new EngineId(value);
-    }
-
-    protected override IEnumerable<object> GetEqualityValues()
-    {
-        yield return Value;
-    }
+    } 
 }
 
 public class Engine : Entity<EngineId>
