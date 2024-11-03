@@ -37,6 +37,11 @@ public class CreateCarBrandCommandHandler(ICarBrandRepository carBrandRepository
         if (existingBrand is not null)
         {
             errors += CarBrandErrors.BrandAlreadyExists(existingBrand.Id,request.Name);
+           
+        }
+
+        if (errors.HasErrors)
+        {
             return errors.ToList();
         }
 

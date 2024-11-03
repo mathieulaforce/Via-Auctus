@@ -15,7 +15,7 @@ public class CarBrandErrors
             }
         );
     }
-    
+
     public static Error BrandNotFound(string name)
     {
         return Error.Validation(
@@ -27,8 +27,8 @@ public class CarBrandErrors
             }
         );
     }
-    
-    public static Error BrandAlreadyExists(CarBrandId brandId , string name)
+
+    public static Error BrandAlreadyExists(CarBrandId brandId, string name)
     {
         return Error.Validation(
             "CarBrand.AlreadyExists",

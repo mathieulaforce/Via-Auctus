@@ -1,6 +1,7 @@
 ﻿using LaMa.Via.Auctus.Domain.Shared;
+using LaMa.Via.Auctus.Domain.Shared.Errors;
 
-namespace LaMa.Via.Auctus.Domain.Tests.CarManagement.Shared;
+namespace LaMa.Via.Auctus.Domain.Tests.Shared;
 
 public class SvgImageTests
 {
@@ -8,20 +9,22 @@ public class SvgImageTests
     public void SvgImageShouldReturnCorrectSvgImage()
     {
         var svg = SvgImage.Create("img.svg");
-        svg.Url.Should().Be("img.svg");
+        svg.Value.Url.Should().Be("img.svg");
     }
     
     [Fact]
-    public void PngImageShouldThrowException()
+    public void PngImageShouldReturnError()
     {
-        var action = () => SvgImage.Create("img.png");
-        action.Should().Throw<ApplicationException>();
+        var result = SvgImage.Create("img.png");
+        result.IsError.Should().BeTrue();
+        result.FirstError.Code.Should().Be(SvgImageErrors.InvalidExtension().Code);
     }
     
     [Fact]
-    public void EmptyStringShouldThrowException()
+    public void EmptyStringShouldReturnError()
     {
-        var action = () => SvgImage.Create("");
-        action.Should().Throw<ArgumentException>();
+        var result = SvgImage.Create("");
+        result.IsError.Should().BeTrue();
+        result.FirstError.Code.Should().Be(SvgImageErrors.IsEmpty().Code);
     }
 }

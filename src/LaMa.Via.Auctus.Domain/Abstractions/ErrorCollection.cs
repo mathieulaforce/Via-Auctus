@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using ErrorOr;
+using LaMa.Via.Auctus.Domain.Shared;
 
 namespace LaMa.Via.Auctus.Domain.Abstractions;
 
@@ -21,7 +22,7 @@ public sealed class ErrorCollection : IErrorCollection
     {
         _errors = [..errors];
     }
-    
+
     public bool HasErrors => Count > 0;
 
     private void AddRange(IEnumerable<Error> errors)
@@ -88,6 +89,15 @@ public sealed class ErrorCollection : IErrorCollection
         set => _errors[index] = value;
     }
 
+    
+    public static ErrorCollection operator +(ErrorCollection left, ErrorCollection right)
+    {
+        var combinedErrors = new ErrorCollection();
+        combinedErrors.AddRange(left);
+        combinedErrors.AddRange(right);
+        return combinedErrors;
+    }
+
     public static ErrorCollection operator +(ErrorCollection left, Error right)
     {
         var combinedErrors = new ErrorCollection();
@@ -96,21 +106,37 @@ public sealed class ErrorCollection : IErrorCollection
         return combinedErrors;
     }
 
+    // while this works, it is confusing to use.
+    // public static ErrorCollection operator +(ErrorCollection left, IErrorOr errorOr)
+    // {
+    //     var combinedErrors = new ErrorCollection();
+    //     combinedErrors.AddRange(left);
+    //     if (errorOr.IsError)
+    //     {
+    //         combinedErrors += errorOr.Errors!;
+    //     }
+    //
+    //     return combinedErrors;
+    // }
+   
     public static implicit operator ErrorCollection(List<Error> errors)
     {
         return new ErrorCollection(errors);
     }
-    
-    public static implicit operator List<Error> (ErrorCollection errors)
+
+    public static implicit operator List<Error>(ErrorCollection errors)
     {
         return errors._errors;
-    } 
+    }
 
-    public static ErrorCollection operator +(ErrorCollection left, ErrorCollection right)
+    public void AddErrorsFromError(params IErrorOr?[] errors)
     {
-        var combinedErrors = new ErrorCollection();
-        combinedErrors.AddRange(left);
-        combinedErrors.AddRange(right);
-        return combinedErrors;
+        foreach (var errorOr in errors.Where(e => e != null))
+        {
+            if(errorOr is { IsError: true, Errors: not null })
+            {
+                _errors.AddRange(errorOr.Errors);
+            }    
+        }
     }
 }

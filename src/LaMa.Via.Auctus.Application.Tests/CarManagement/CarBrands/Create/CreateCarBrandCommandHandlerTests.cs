@@ -3,6 +3,7 @@ using LaMa.Via.Auctus.Application.CarManagement.CarBrands;
 using LaMa.Via.Auctus.Application.CarManagement.CarBrands.Create;
 using LaMa.Via.Auctus.Domain.CarManagement;
 using LaMa.Via.Auctus.Domain.CarManagement.Errors;
+using LaMa.Via.Auctus.Domain.Shared.Errors;
 using LaMa.Via.Auctus.Domain.Tests.CarManagement.ObjectMothers;
 
 namespace LaMa.Via.Auctus.Application.Tests.CarManagement.CarBrands.Create;
@@ -35,6 +36,20 @@ public class CreateCarBrandCommandHandlerTests
     }
     
     [Fact]
+    public async Task GivenInvalidThemeWhenHandleThenReturnsError()
+    {
+        A.CallTo(() => _carBrandRepository.FindByName("Tesla", default)).Returns((CarBrand?)null);
+        
+        var command = new CreateCarBrandCommand("Tesla", "green", "#333333", "Roboto, sans-serif", "tesla_logo.svg" );
+        var result = await _sut.Handle(command,default);
+
+        result.IsError.Should().BeTrue();
+        result.FirstError.Code.Should().Be(CssColorErrors.InvalidColorCode().Code);
+        A.CallTo(() => _unitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
+        A.CallTo(() => _carBrandRepository.FindByName("Tesla", default)).MustHaveHappened();
+    }
+    
+    [Fact]
     public async Task GivenExistingBrandWhenHandleThenReturnError()
     {
         var existingBrand = CarBrandObjectMother.Tesla;
@@ -44,6 +59,6 @@ public class CreateCarBrandCommandHandlerTests
         var result = await _sut.Handle(command,default);
 
         result.IsError.Should().BeTrue();
-        result.FirstError.Code.Should().Be(CarBrandErrors.BrandAlreadyExists(existingBrand.Id,existingBrand.Name).Code);
+        result.Errors.Should().Contain(e => e.Code == CarBrandErrors.BrandAlreadyExists(existingBrand.Id,existingBrand.Name).Code);
     }
 }

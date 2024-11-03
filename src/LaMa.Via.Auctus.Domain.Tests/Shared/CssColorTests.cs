@@ -1,13 +1,14 @@
 ﻿using LaMa.Via.Auctus.Domain.Shared;
+using LaMa.Via.Auctus.Domain.Shared.Errors;
 
-namespace LaMa.Via.Auctus.Domain.Tests.CarManagement.Shared;
+namespace LaMa.Via.Auctus.Domain.Tests.Shared;
 
 public class CssColorTests
 {
     [Fact]
     public void CssColorIsHexColor()
     {
-        var color = CssColor.Create("#FF0000");
+        var color = CssColor.Create("#FF0000").Value;
 
         color.Code.Should().Be("#FF0000");
         color.IsHexColor().Should().BeTrue();
@@ -20,7 +21,7 @@ public class CssColorTests
     [Fact]
     public void CssColorIsRgbColor()
     {
-        var color = CssColor.Create("rgb(255, 0, 0)");
+        var color = CssColor.Create("rgb(255, 0, 0)").Value;
 
         color.Code.Should().Be("rgb(255, 0, 0)");
         color.IsHexColor().Should().BeFalse();
@@ -33,7 +34,7 @@ public class CssColorTests
     [Fact]
     public void IsRgbaColor()
     {
-        var color = CssColor.Create("rgba(255, 0, 0, 0.5)");
+        var color = CssColor.Create("rgba(255, 0, 0, 0.5)").Value;
 
         color.Code.Should().Be("rgba(255, 0, 0, 0.5)");
         color.IsHexColor().Should().BeFalse();
@@ -46,7 +47,7 @@ public class CssColorTests
     [Fact]
     public void CssColorIsHslColor()
     {
-        var color = CssColor.Create("hsl(120, 100%, 50%)");
+        var color = CssColor.Create("hsl(120, 100%, 50%)").Value;
 
         color.Code.Should().Be("hsl(120, 100%, 50%)");
         color.IsHexColor().Should().BeFalse();
@@ -59,7 +60,7 @@ public class CssColorTests
     [Fact]
     public void CssColorIsHslaColor()
     {
-        var color = CssColor.Create("hsla(120, 100%, 50%, 0.5)");
+        var color = CssColor.Create("hsla(120, 100%, 50%, 0.5)").Value;
 
         color.Code.Should().Be("hsla(120, 100%, 50%, 0.5)");
         color.IsHexColor().Should().BeFalse();
@@ -70,9 +71,10 @@ public class CssColorTests
     }
     
     [Fact]
-    public void CreateUnsupportedColorFormatThenThrowsException()
+    public void CreateUnsupportedColorFormatShouldReturnError()
     {
-        var action = () => CssColor.Create("Green");
-        action.Should().Throw<FormatException>();
+        var result =CssColor.Create("Green");
+        result.IsError.Should().BeTrue();
+        result.FirstError.Should().Be(CssColorErrors.InvalidColorCode());
     }
 }

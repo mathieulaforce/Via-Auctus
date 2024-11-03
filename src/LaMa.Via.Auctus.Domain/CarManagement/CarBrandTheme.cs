@@ -1,5 +1,7 @@
 ﻿using ErrorOr;
+using LaMa.Via.Auctus.Domain.Abstractions;
 using LaMa.Via.Auctus.Domain.Shared;
+using LaMa.Via.Auctus.Domain.Shared.Errors;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
@@ -27,9 +29,21 @@ public sealed record CarBrandTheme
     public static ErrorOr<CarBrandTheme> Create(string primaryColor, string? secondaryColor, string fontFamily,
         string svgLogo)
     {
+        var errors = new ErrorCollection();
         var primary = CssColor.Create(primaryColor);
-        var secondary = string.IsNullOrWhiteSpace(secondaryColor) ? null : CssColor.Create(secondaryColor);
+        var secondary = string.IsNullOrWhiteSpace(secondaryColor)
+            ? (ErrorOr<CssColor>?)null
+            : CssColor.Create(secondaryColor); 
+        
         var logo = SvgImage.Create(svgLogo);
-        return Create(primary, secondary, fontFamily, logo);
+
+        errors.AddErrorsFromError(primary, secondary, logo);
+         
+        if (errors.HasErrors)
+        {
+            return errors.ToList();
+        }
+
+        return Create(primary.Value,secondary?.Value, fontFamily, logo.Value);
     }
 }

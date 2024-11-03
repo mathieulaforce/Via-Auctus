@@ -1,4 +1,7 @@
-﻿namespace LaMa.Via.Auctus.Domain.Shared;
+﻿using ErrorOr;
+using LaMa.Via.Auctus.Domain.Shared.Errors;
+
+namespace LaMa.Via.Auctus.Domain.Shared;
 
 public sealed record SvgImage
 {
@@ -9,18 +12,17 @@ public sealed record SvgImage
 
     public string Url { get; private set; }
 
-    public static SvgImage Create(string url)
+    public static ErrorOr<SvgImage> Create(string url)
     {
-        // TODO result pattern
         if (string.IsNullOrWhiteSpace(url))
         {
-            throw new ArgumentNullException(nameof(url));
+            return SvgImageErrors.IsEmpty();
         }
 
         var extension = Path.GetExtension(url).ToLowerInvariant();
         if (extension != ".svg")
         {
-            throw new ApplicationException($"Invalid svg image extension: '{extension}'");
+            return SvgImageErrors.InvalidExtension();
         }
 
         return new SvgImage(url);

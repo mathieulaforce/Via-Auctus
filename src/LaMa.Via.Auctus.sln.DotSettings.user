@@ -15,4 +15,11 @@
       &lt;TestId&gt;xUnit::CBE1CA9F-29A6-4A6A-9E57-3598EE0A836A::net8.0::LaMa.Via.Auctus.Application.Tests.CarManagement.CarBrands.Create.CreateCarBrandCommandHandlerTests.GivenExistingBrandWhenHandleThenReturnError&lt;/TestId&gt;&#xD;
     &lt;/TestAncestor&gt;&#xD;
   &lt;/Or&gt;&#xD;
+&lt;/SessionState&gt;</s:String>
+	
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=e25e4dda_002Dde5c_002D4faa_002Dab0b_002Dcf8d84b8b0a1/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="Session" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;Or&gt;&#xD;
+    &lt;Project Location="G:\projects\Via-Auctus\src\LaMa.Via.Auctus.Application.Tests" Presentation="&amp;lt;LaMa.Via.Auctus.Application.Tests&amp;gt;" /&gt;&#xD;
+    &lt;Project Location="G:\projects\Via-Auctus\src\LaMa.Via.Auctus.Domain.Tests" Presentation="&amp;lt;LaMa.Via.Auctus.Domain.Tests&amp;gt;" /&gt;&#xD;
+  &lt;/Or&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

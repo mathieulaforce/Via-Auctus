@@ -17,7 +17,7 @@ public class CarTests
         var engine = EngineObjectMother.UnknownElectricEngine;
         var engines = new Engines();
         engines.AddEngine(engine);
-        var version = CarModelVersion.Create(modelY.Id, "Long Range All-Wheel Drive", 2024, engines, SupportedImage.Create("test.png"));
+        var version = CarModelVersion.Create(modelY.Id, "Long Range All-Wheel Drive", 2024, engines, SupportedImage.Create("test.png").Value);
 
         var teslaModelYResult = Car.Create(tesla, modelY, version, engine, null);
 
