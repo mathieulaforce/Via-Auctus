@@ -20,7 +20,7 @@ public sealed record EngineId : AggregateRootId<Guid>
     public static EngineId Create(Guid value)
     {
         return new EngineId(value);
-    } 
+    }
 }
 
 public class Engine : Entity<EngineId>

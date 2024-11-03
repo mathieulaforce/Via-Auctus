@@ -24,7 +24,7 @@ public sealed record CarRegistration
 
         if (errors.HasErrors)
         {
-            return errors;
+            return errors.ToList();
         }
 
         return new CarRegistration(licensePlate, firstRegistrationDate, registrationExpiryDate);
@@ -41,7 +41,8 @@ public sealed record CarRegistration
 
         if (firstRegistrationDate >= registrationExpiryDate)
         {
-            errors += CarRegistrationErrors.FirstRegistrationDateAfterExpiryDate(firstRegistrationDate, registrationExpiryDate);
+            errors += CarRegistrationErrors.FirstRegistrationDateAfterExpiryDate(firstRegistrationDate,
+                registrationExpiryDate);
         }
 
         return errors;

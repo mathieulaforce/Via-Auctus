@@ -1,4 +1,7 @@
-﻿namespace LaMa.Via.Auctus.Domain.Shared;
+﻿using ErrorOr;
+using LaMa.Via.Auctus.Domain.Shared.Errors;
+
+namespace LaMa.Via.Auctus.Domain.Shared;
 
 public sealed record SupportedImage
 {
@@ -12,17 +15,17 @@ public sealed record SupportedImage
 
     public string Url { get; private set; }
 
-    public static SupportedImage Create(string url)
+    public static ErrorOr<SupportedImage> Create(string url)
     {
         if (string.IsNullOrWhiteSpace(url))
         {
-            throw new ArgumentNullException(nameof(url));
+            return SupportedImageErrors.IsEmpty();
         }
 
         var extension = Path.GetExtension(url).ToLowerInvariant();
         if (!SupportedExtensions.Contains(extension))
         {
-            throw new ApplicationException($"Invalid image extension: '{extension}'");
+            return SupportedImageErrors.InvalidExtension();
         }
 
         return new SupportedImage(url);

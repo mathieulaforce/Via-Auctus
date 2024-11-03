@@ -3,7 +3,7 @@ using LaMa.Via.Auctus.Domain.CarManagement.Events;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
-public sealed record CarBrandId 
+public sealed record CarBrandId
 {
     private CarBrandId(Guid id)
     {
@@ -11,7 +11,7 @@ public sealed record CarBrandId
     }
 
     public Guid Value { get; }
- 
+
     public static CarBrandId CreateUnique()
     {
         return new CarBrandId(UniqueIdGenerator.Generate());

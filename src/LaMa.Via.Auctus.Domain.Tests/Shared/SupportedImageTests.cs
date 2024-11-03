@@ -1,6 +1,7 @@
 ﻿using LaMa.Via.Auctus.Domain.Shared;
+using LaMa.Via.Auctus.Domain.Shared.Errors;
 
-namespace LaMa.Via.Auctus.Domain.Tests.CarManagement.Shared;
+namespace LaMa.Via.Auctus.Domain.Tests.Shared;
 
 public class SupportedImageTests
 {
@@ -13,21 +14,23 @@ public class SupportedImageTests
     [InlineData(".svg")] 
     public void SvgImageShouldReturnCorrectImage(string extension)
     {
-        var svg = SupportedImage.Create($"img{extension}");
+        var svg = SupportedImage.Create($"img{extension}").Value;
         svg.Url.Should().Be($"img{extension}");
     }
      
     [Fact]
-    public void EmptyStringShouldThrowException()
+    public void EmptyStringShouldReturnError()
     {
-        var action = () => SupportedImage.Create("");
-        action.Should().Throw<ArgumentException>();
+        var result = SupportedImage.Create("");
+        result.IsError.Should().BeTrue();
+        result.FirstError.Code.Should().Be(SupportedImageErrors.IsEmpty().Code);
     }
     
     [Fact]
-    public void UnsupportedTypeShouldThrowException()
-    {
-        var action = () => SupportedImage.Create("un.supported");
-        action.Should().Throw<ApplicationException>();
+    public void UnsupportedTypeShouldReturnError()
+    { 
+        var result = SupportedImage.Create("un.supported");
+        result.IsError.Should().BeTrue();
+        result.FirstError.Code.Should().Be(SupportedImageErrors.InvalidExtension().Code);
     }
 }

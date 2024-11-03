@@ -1,4 +1,6 @@
 ﻿using System.Text.RegularExpressions;
+using ErrorOr;
+using LaMa.Via.Auctus.Domain.Shared.Errors;
 
 namespace LaMa.Via.Auctus.Domain.Shared;
 
@@ -42,17 +44,21 @@ public sealed record CssColor
 
     public static bool CanCreate(string code)
     {
-        return IsHexColor(code) || IsRgbColor(code) || IsRgbaColor(code) || IsHslColor(code) || IsHslaColor(code);
+        return IsHexColor(code) ||
+               IsRgbColor(code) ||
+               IsRgbaColor(code) ||
+               IsHslColor(code) ||
+               IsHslaColor(code);
     }
 
-    public static CssColor Create(string code)
+    public static ErrorOr<CssColor> Create(string code)
     {
         if (CanCreate(code))
         {
             return new CssColor(code);
         }
 
-        throw new FormatException($"Invalid css color code: '{code}'. Supported types are hex, rgb(a) and hsl(a)");
+        return CssColorErrors.InvalidColorCode();
     }
 
     public static bool IsHexColor(string colorCode)

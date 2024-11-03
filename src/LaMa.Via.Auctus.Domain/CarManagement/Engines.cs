@@ -1,4 +1,6 @@
-﻿using LaMa.Via.Auctus.Domain.Abstractions;
+﻿using ErrorOr;
+using LaMa.Via.Auctus.Domain.Abstractions;
+using LaMa.Via.Auctus.Domain.CarManagement.Errors;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
@@ -37,12 +39,11 @@ public class Engines : EntityCollection<Engine, EngineId>
                                                     StringComparison.InvariantCultureIgnoreCase)));
     }
 
-    public Engines AddEngine(Engine engine)
+    public ErrorOr<Engines> AddEngine(Engine engine)
     {
         if (!CanAddEngine(engine))
         {
-            // TODO Exception handling
-            throw new Exception("Can't add vehicle model version");
+            return EnginesErrors.EngineAlreadyRegistered(engine.Id, engine.Name);
         }
 
         Items.Add(engine);

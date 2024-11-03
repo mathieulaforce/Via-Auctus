@@ -2,7 +2,7 @@
 
 namespace LaMa.Via.Auctus.Domain.CarManagement.Errors;
 
-public class FuelTypeErrors
+public static class FuelTypeErrors
 {
     public static Error EmptyFuelType()
     {

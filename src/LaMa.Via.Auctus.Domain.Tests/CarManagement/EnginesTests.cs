@@ -1,4 +1,5 @@
 ﻿using LaMa.Via.Auctus.Domain.CarManagement;
+using LaMa.Via.Auctus.Domain.CarManagement.Errors;
 using LaMa.Via.Auctus.Domain.Tests.CarManagement.ObjectMothers;
 
 namespace LaMa.Via.Auctus.Domain.Tests.CarManagement;
@@ -57,12 +58,13 @@ public class EnginesTests
         var engines = Engines.Empty;
         var engine = EngineObjectMother.UnknownElectricEngine;
         engines.AddEngine(engine);
-        var action = () => engines.AddEngine(engine);
+        var result = engines.AddEngine(engine);
         
         engines.CanAddEngine(engine).Should().BeFalse();
         engines.Contains(engine).Should().BeTrue();
         engines.Contains(engine.Id).Should().BeTrue();
         engines.CanAddEngine(engine.Name ,engine.FuelType,engine.HorsePower, engine.Torque,engine.Efficiency).Should().BeFalse();
-        action.Should().Throw<Exception>(); 
+        result.IsError.Should().BeTrue();
+        result.FirstError.Code.Should().Be(EnginesErrors.EngineAlreadyRegistered(engine.Id,engine.Name).Code);
     } 
 }

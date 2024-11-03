@@ -20,7 +20,7 @@ public static class CarRegistrationErrors
             "First registration date must be greater than registration expiry",
             new Dictionary<string, object>
             {
-                { "firstRegistration", firstRegistrationDate},
+                { "firstRegistration", firstRegistrationDate },
                 { "registrationExpiry", expiryDate }
             }
         );
