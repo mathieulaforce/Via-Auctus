@@ -7,6 +7,7 @@ namespace LaMa.Via.Auctus.Domain.CarManagement;
 
 public sealed record CarBrandTheme
 {
+    private CarBrandTheme() { }
     private CarBrandTheme(CssColor primaryColor, CssColor? secondaryColor, string fontFamily, SvgImage logo)
     {
         PrimaryColor = primaryColor;

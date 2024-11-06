@@ -3,14 +3,14 @@ using LaMa.Via.Auctus.Domain.CarManagement.Events;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
-public sealed record EngineId : AggregateRootId<Guid>
+public sealed record EngineId
 {
     private EngineId(Guid id)
     {
         Value = id;
     }
 
-    public override Guid Value { get; protected set; }
+    public Guid Value { get; private set; }
 
     public static EngineId CreateUnique()
     {
@@ -25,6 +25,9 @@ public sealed record EngineId : AggregateRootId<Guid>
 
 public class Engine : Entity<EngineId>
 {
+    private Engine()
+    { 
+    }
     private Engine(EngineId id, string name, FuelType fuelType, int? horsePower, int? torque,
         EngineEfficiency efficiency) : base(id)
     {

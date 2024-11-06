@@ -18,6 +18,7 @@ public class CreateCarBrandCommandHandler(ICarBrandRepository carBrandRepository
         }
         
         var brand = result.Value;
+        await carBrandRepository.Add(brand, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return brand.Id;
     }

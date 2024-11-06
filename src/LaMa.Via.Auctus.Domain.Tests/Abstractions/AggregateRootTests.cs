@@ -30,12 +30,12 @@ public class AggregateRootTests
         sut1.Id.Should().NotBe(sut2.Id);
     }
 
-    private record SutAggregateRootId(Guid value) : AggregateRootId<Guid>
+    private record SutAggregateRootId(Guid value) 
     {
-        public sealed override Guid Value { get; protected set; } = value; 
+         
     }
 
-    private class SutAggregateRoot(SutAggregateRootId id, string name) : AggregateRoot<SutAggregateRootId, Guid>(id)
+    private class SutAggregateRoot(SutAggregateRootId id, string name) : AggregateRoot<SutAggregateRootId>(id)
     {
         public string Name { get; } = name;
     }

@@ -25,6 +25,7 @@ public sealed record CarModelId
 
 public class CarModel : Entity<CarModelId>
 {
+    private CarModel():base() {}
     private CarModel(CarModelId id, string name, CarBrandId carBrandId, SupportedImage? image) : base(id)
     {
         Name = name;

@@ -8,6 +8,18 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaMa.Via.Auctus.Application
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaMa.Via.Auctus.Application.Tests", "LaMa.Via.Auctus.Application.Tests\LaMa.Via.Auctus.Application.Tests.csproj", "{CBE1CA9F-29A6-4A6A-9E57-3598EE0A836A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaMa.Via.Auctus.Infrastructure", "LaMa.Via.Auctus.Infrastructure\LaMa.Via.Auctus.Infrastructure.csproj", "{E5726A7B-81C6-414F-94A5-6D5DCB039407}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Helpers", "Helpers", "{48BA36A3-97B0-47E0-AC58-82C7A633F03F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaMa.Via.Auctus.Console", "LaMa.Via.Auctus.Console\LaMa.Via.Auctus.Console.csproj", "{14FC7357-A9BA-471A-9572-F8F765B7EB89}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{65329B19-300A-4B16-B452-FC97AADF585A}"
+	ProjectSection(SolutionItems) = preProject
+		docker-compose.yml = docker-compose.yml
+		.dockerignore = .dockerignore
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +42,16 @@ Global
 		{CBE1CA9F-29A6-4A6A-9E57-3598EE0A836A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CBE1CA9F-29A6-4A6A-9E57-3598EE0A836A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CBE1CA9F-29A6-4A6A-9E57-3598EE0A836A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E5726A7B-81C6-414F-94A5-6D5DCB039407}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E5726A7B-81C6-414F-94A5-6D5DCB039407}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E5726A7B-81C6-414F-94A5-6D5DCB039407}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E5726A7B-81C6-414F-94A5-6D5DCB039407}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14FC7357-A9BA-471A-9572-F8F765B7EB89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14FC7357-A9BA-471A-9572-F8F765B7EB89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14FC7357-A9BA-471A-9572-F8F765B7EB89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14FC7357-A9BA-471A-9572-F8F765B7EB89}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{14FC7357-A9BA-471A-9572-F8F765B7EB89} = {48BA36A3-97B0-47E0-AC58-82C7A633F03F}
 	EndGlobalSection
 EndGlobal

@@ -5,14 +5,14 @@ using LaMa.Via.Auctus.Domain.CarManagement.Events;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
-public sealed record CarId : AggregateRootId<Guid>
+public sealed record CarId 
 {
     private CarId(Guid value)
     {
         Value = value;
     }
 
-    public override Guid Value { get; protected set; }
+    public Guid Value { get; private set; }
 
     public static CarId CreateUnique()
     {
@@ -25,7 +25,7 @@ public sealed record CarId : AggregateRootId<Guid>
     }
 }
 
-public class Car : AggregateRoot<CarId, Guid>
+public class Car : AggregateRoot<CarId>
 {
     private Car(CarId carId, CarBrand brand, CarModel model, CarModelVersion version, Engine engine,
         CarRegistration? registration) : base(carId)

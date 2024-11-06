@@ -1,10 +1,20 @@
 ﻿namespace LaMa.Via.Auctus.Domain.Abstractions;
-
-public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>, IHasDomainEvents
+ 
+public abstract class Entity<TId>: IEquatable<Entity<TId>>, IHasDomainEvents
     where TId : notnull
 {
     private readonly List<IDomainEvent> _domainEvents = new();
-    public TId Id { get; } = id;
+
+    protected Entity()
+    {
+        Id = default!;
+    }
+
+    protected Entity(TId id)
+    {
+        Id = id;
+    }
+    public TId Id { get; }
 
     public bool Equals(Entity<TId>? other)
     {
