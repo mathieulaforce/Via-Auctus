@@ -27,6 +27,9 @@ public sealed record CarId
 
 public class Car : AggregateRoot<CarId>
 {
+    private Car(): base()
+    { 
+    }
     private Car(CarId carId, CarBrand brand, CarModel model, CarModelVersion version, Engine engine,
         CarRegistration? registration) : base(carId)
     {

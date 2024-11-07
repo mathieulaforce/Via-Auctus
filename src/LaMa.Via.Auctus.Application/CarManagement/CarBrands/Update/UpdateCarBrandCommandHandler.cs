@@ -6,7 +6,7 @@ using LaMa.Via.Auctus.Domain.CarManagement.Errors;
 
 namespace LaMa.Via.Auctus.Application.CarManagement.CarBrands.Update;
 
-public class UpdateCarBrandCommandHandler(ICarBrandRepository carBrandRepository, IUnitOfWork unitOfWork)
+internal class UpdateCarBrandCommandHandler(ICarBrandRepository carBrandRepository, IUnitOfWork unitOfWork)
     : ICommandHandler<UpdateCarBrandCommand, CarBrandId>
 {
     public async Task<ErrorOr<CarBrandId>> Handle(UpdateCarBrandCommand request, CancellationToken cancellationToken)

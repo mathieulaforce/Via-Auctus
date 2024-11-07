@@ -2,7 +2,7 @@
 
 namespace LaMa.Via.Auctus.Application.CarManagement.CarBrands.Create;
 
-public class CreateCarBrandCommandValidator : AbstractValidator<CreateCarBrandCommand>
+internal class CreateCarBrandCommandValidator : AbstractValidator<CreateCarBrandCommand>
 {
     public CreateCarBrandCommandValidator()
     {

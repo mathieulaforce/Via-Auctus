@@ -8,7 +8,7 @@ using LaMa.Via.Auctus.Domain.Shared;
 
 namespace LaMa.Via.Auctus.Application.CarManagement.CarModels.Create;
 
-public class CreateCarModelCommandHandler : ICommandHandler<CreateCarModelCommand, CarModelId>
+internal class CreateCarModelCommandHandler : ICommandHandler<CreateCarModelCommand, CarModelId>
 {
     private readonly ICarModelRepository _carModelRepository;
     private readonly ICarBrandRepository _carBrandRepository;

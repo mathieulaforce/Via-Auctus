@@ -2,7 +2,7 @@
 
 namespace LaMa.Via.Auctus.Application.CarManagement.CarBrands.Update;
 
-public class CreateCarBrandCommandValidator : AbstractValidator<UpdateCarBrandCommand>
+internal class CreateCarBrandCommandValidator : AbstractValidator<UpdateCarBrandCommand>
 {
     public CreateCarBrandCommandValidator()
     { 
