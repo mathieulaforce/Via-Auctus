@@ -6,7 +6,7 @@
 trigger:
 - trunk
 
-pool: Azure Pipelines
+pool: ViaAuctus
 
 variables:
   solution: '**/*.sln'
