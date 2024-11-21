@@ -58,4 +58,20 @@ public class DomainTests
 
         failingTypes.Should().BeEmpty();
     }
+
+    [Fact]
+    public void AllEntitiesPrivateConstructorsCanBeInstantiated()
+    {
+        var entityTypes = Types.InAssembly(DomainAssembly)
+            .That()
+            .Inherit(typeof(Entity<>))
+            .And()
+            .AreNotAbstract()
+            .GetTypes();
+
+        foreach (var entityType in entityTypes)
+        {
+            Activator.CreateInstance(entityType, true);
+        }
+    }
 }

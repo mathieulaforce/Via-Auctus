@@ -22,11 +22,11 @@ public sealed record EngineEfficiency
 
     public static EngineEfficiency LPer100Km(decimal value)
     {
-        return new EngineEfficiency(value, "L/100km");
+        return Create(value, "L/100km");
     }
 
     public static EngineEfficiency WhPerKm(decimal value)
     {
-        return new EngineEfficiency(value, "Wh/km");
+        return Create(value, "Wh/km");
     }
 }

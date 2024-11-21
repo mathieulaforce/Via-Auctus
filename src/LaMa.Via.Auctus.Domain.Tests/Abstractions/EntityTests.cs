@@ -27,6 +27,14 @@ public class EntityTests
         sut1.Value.Should().Be(sut2.Value);
     }
 
+    [Fact]
+    public void WhenGetHashThenReturnsSameHashCode()
+    {
+        var sut1 = new SutEntity(Guid.Empty, "sut").GetHashCode();
+        var sut2 = new SutEntity(Guid.Empty, "sut").GetHashCode();
+        sut1.Should().Be(sut2);
+    }
+
     private class SutEntity(Guid id, string value) : Entity<Guid>(id)
     {
         public string Value { get; } = value;

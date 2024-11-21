@@ -19,8 +19,8 @@ internal class CreateCarCommandHandler : ICommandHandler<CreateCarCommand, CarId
     private readonly IUnitOfWork _unitOfWork;
 
     public CreateCarCommandHandler(ICarWriteRepository carWriteRepository,
-        ICarModelWriteRepository carModelWriteRepository,
         ICarBrandWriteRepository carBrandWriteRepository,
+        ICarModelWriteRepository carModelWriteRepository,
         ICarModelVersionWriteRepository carModelVersionWriteRepository,
         IUnitOfWork unitOfWork)
     {

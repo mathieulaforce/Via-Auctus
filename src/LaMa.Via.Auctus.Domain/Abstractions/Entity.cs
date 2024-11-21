@@ -10,7 +10,7 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>, IHasDomainEvents
         Id = default!;
     }
 
-    protected Entity(TId id)
+    protected Entity(TId id) : this()
     {
         Id = id;
     }

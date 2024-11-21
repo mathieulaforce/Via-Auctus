@@ -52,7 +52,7 @@ public class CreateCarBrandCommandHandlerTests
     [Fact]
     public async Task GivenExistingBrandWhenHandleThenReturnError()
     {
-        var existingBrand = CarBrandObjectMother.Tesla;
+        var existingBrand = CarBrandObjectMother.Tesla();
         A.CallTo(() => _carBrandWriteRepository.FindByName("Tesla", default)).Returns(existingBrand);
 
         var command = new CreateCarBrandCommand("Tesla", "#CC0000", "#333333", "Roboto, sans-serif", "tesla_logo.svg");

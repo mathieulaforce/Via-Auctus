@@ -7,19 +7,19 @@ public class CarModelObjectMother
 {
     public static CarModel TeslaModel3(string? image = null)
     {
-        return CarModel.Create("Tesla 3", CarBrandObjectMother.Tesla.Id,
+        return CarModel.Create("Tesla 3", CarBrandObjectMother.Tesla().Id,
             image != null ? SupportedImage.Create(image).Value : null);
     }
 
     public static CarModel TeslaModelY(string? image = null)
     {
-        return CarModel.Create("Tesla Y", CarBrandObjectMother.Tesla.Id,
+        return CarModel.Create("Tesla Y", CarBrandObjectMother.Tesla().Id,
             image != null ? SupportedImage.Create(image).Value : null);
     }
 
     public static CarModel BmwX1(string? image = null)
     {
-        return CarModel.Create("BMW X1", CarBrandObjectMother.Bmw.Id,
+        return CarModel.Create("BMW X1", CarBrandObjectMother.Bmw().Id,
             image != null ? SupportedImage.Create(image).Value : null);
     }
 }
