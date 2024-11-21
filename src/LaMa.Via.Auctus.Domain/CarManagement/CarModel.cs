@@ -25,6 +25,10 @@ public sealed record CarModelId
 
 public class CarModel : Entity<CarModelId>
 {
+    private CarModel()
+    {
+    }
+
     private CarModel(CarModelId id, string name, CarBrandId carBrandId, SupportedImage? image) : base(id)
     {
         Name = name;
@@ -40,5 +44,10 @@ public class CarModel : Entity<CarModelId>
     {
         var id = CarModelId.CreateUnique();
         return new CarModel(id, name, carBrandId, image);
+    }
+
+    public bool SupportsVersion(CarModelVersion version)
+    {
+        return version.CarModelId == Id;
     }
 }

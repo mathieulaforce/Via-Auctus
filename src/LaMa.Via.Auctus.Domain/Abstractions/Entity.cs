@@ -1,14 +1,35 @@
 ﻿namespace LaMa.Via.Auctus.Domain.Abstractions;
 
-public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>, IHasDomainEvents
+public abstract class Entity<TId> : IEquatable<Entity<TId>>, IHasDomainEvents
     where TId : notnull
 {
     private readonly List<IDomainEvent> _domainEvents = new();
-    public TId Id { get; } = id;
+
+    protected Entity()
+    {
+        Id = default!;
+    }
+
+    protected Entity(TId id)
+    {
+        Id = id;
+    }
+
+    public TId Id { get; }
 
     public bool Equals(Entity<TId>? other)
     {
         return Equals((object?)other);
+    }
+
+    public IReadOnlyList<IDomainEvent> GetDomainEvents()
+    {
+        return _domainEvents.AsReadOnly();
+    }
+
+    public void ClearDomainEvents()
+    {
+        _domainEvents.Clear();
     }
 
     public override bool Equals(object? obj)
@@ -29,16 +50,6 @@ public abstract class Entity<TId>(TId id) : IEquatable<Entity<TId>>, IHasDomainE
     public override int GetHashCode()
     {
         return Id.GetHashCode();
-    }
-
-    public IReadOnlyList<IDomainEvent> GetDomainEvents()
-    {
-        return _domainEvents.AsReadOnly();
-    }
-
-    public void ClearDomainEvents()
-    {
-        _domainEvents.Clear();
     }
 
     protected void RaiseDomainEvent(IDomainEvent domainEvent)

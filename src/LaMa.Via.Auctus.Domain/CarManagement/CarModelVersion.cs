@@ -3,14 +3,14 @@ using LaMa.Via.Auctus.Domain.Shared;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
-public sealed record CarModelVersionId : AggregateRootId<Guid>
+public sealed record CarModelVersionId
 {
     private CarModelVersionId(Guid id)
     {
         Value = id;
     }
 
-    public override Guid Value { get; protected set; }
+    public Guid Value { get; private set; }
 
     public static CarModelVersionId CreateUnique()
     {
@@ -23,8 +23,12 @@ public sealed record CarModelVersionId : AggregateRootId<Guid>
     }
 }
 
-public sealed class CarModelVersion : AggregateRoot<CarModelVersionId, Guid>
+public sealed class CarModelVersion : AggregateRoot<CarModelVersionId>
 {
+    private CarModelVersion()
+    {
+    }
+
     private CarModelVersion(CarModelVersionId id, CarModelId carModelId, string name, int year,
         Engines engines,
         SupportedImage? image) : base(id)
@@ -49,8 +53,13 @@ public sealed class CarModelVersion : AggregateRoot<CarModelVersionId, Guid>
         return new CarModelVersion(id, carModelId, versionName, year, engines, image);
     }
 
-    public bool HasEngine(Engine engine)
+    public bool HasEngine(EngineId engineId)
     {
-        return Engines.Contains(engine);
+        return Engines.Contains(engineId);
+    }
+
+    public Engine GetEngine(EngineId engineId)
+    {
+        return Engines.GetEngineById(engineId);
     }
 }

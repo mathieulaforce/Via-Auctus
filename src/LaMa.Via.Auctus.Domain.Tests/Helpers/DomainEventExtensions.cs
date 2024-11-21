@@ -9,8 +9,9 @@ public static class DomainEventExtensions
         var events = ContainsOneOrMultipleDomainEventOfType<TDomainEvent>(hasDomainEvents);
         return events.Should().ContainSingle().Subject;
     }
-    
-    public static List<TDomainEvent> ContainsOneOrMultipleDomainEventOfType<TDomainEvent>(this IHasDomainEvents hasDomainEvents)
+
+    public static List<TDomainEvent> ContainsOneOrMultipleDomainEventOfType<TDomainEvent>(
+        this IHasDomainEvents hasDomainEvents)
     {
         var events = hasDomainEvents.GetDomainEvents().Where(e => e is TDomainEvent).Cast<TDomainEvent>().ToList();
         events.Should().NotBeEmpty("There should be one or more domain events {DomainEvent}", typeof(TDomainEvent));

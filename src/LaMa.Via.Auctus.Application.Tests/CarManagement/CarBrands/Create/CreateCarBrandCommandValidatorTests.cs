@@ -14,12 +14,12 @@ public class CreateCarBrandCommandValidatorTests
         result.Errors.Select(x => x.PropertyName).Should()
             .ContainInOrder("Name", "PrimaryColor", "FontFamily", "LogoSvgUrl");
     }
-    
+
     [Fact]
     public void GivenValidCommandWhenValidatingReturnsValid()
     {
         var validator = new CreateCarBrandCommandValidator();
         var result = validator.Validate(new CreateCarBrandCommand("name", "primary", null, "font", "logo"));
-        result.IsValid.Should().BeTrue(); 
+        result.IsValid.Should().BeTrue();
     }
 }

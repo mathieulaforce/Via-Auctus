@@ -25,15 +25,19 @@ public sealed record CarBrandId
 
 public class CarBrand : Entity<CarBrandId>
 {
+    private CarBrand()
+    {
+    }
+
     private CarBrand(CarBrandId id, string name, CarBrandTheme theme) : base(id)
     {
         Name = name;
         Theme = theme;
     }
 
-    public string Name { get; private set; }
+    public string Name { get; private set; } = null!;
 
-    public CarBrandTheme Theme { get; private set; }
+    public CarBrandTheme Theme { get; private set; } = null!;
 
     public static CarBrand Create(string name, CarBrandTheme theme)
     {
@@ -46,5 +50,25 @@ public class CarBrand : Entity<CarBrandId>
     public void UpdateTheme(CarBrandTheme theme)
     {
         Theme = theme;
+    }
+
+    public void ChangeName(string name)
+    {
+        if (string.IsNullOrWhiteSpace(name))
+        {
+            throw new ArgumentNullException(nameof(name));
+        }
+
+        if (Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+        {
+            return;
+        }
+
+        Name = name;
+    }
+
+    public bool SupportsModel(CarModel model)
+    {
+        return model.CarBrandId == Id;
     }
 }

@@ -69,11 +69,11 @@ public class CssColorTests
         color.IsHslColor().Should().BeFalse();
         color.IsHslaColor().Should().BeTrue();
     }
-    
+
     [Fact]
     public void CreateUnsupportedColorFormatShouldReturnError()
     {
-        var result =CssColor.Create("Green");
+        var result = CssColor.Create("Green");
         result.IsError.Should().BeTrue();
         result.FirstError.Should().Be(CssColorErrors.InvalidColorCode());
     }
