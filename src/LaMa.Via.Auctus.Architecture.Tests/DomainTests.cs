@@ -7,6 +7,7 @@ namespace LaMa.Via.Auctus.Architecture.Tests;
 public class DomainTests
 {
     private readonly Assembly DomainAssembly = ViaAuctusAssemblies.DomainAssembly;
+
     [Fact]
     public void GivenDomainEventsShouldBeSealed()
     {
@@ -44,7 +45,7 @@ public class DomainTests
             .GetTypes();
 
         var failingTypes = new List<Type>();
-        foreach (Type entityType in entityTypes)
+        foreach (var entityType in entityTypes)
         {
             ConstructorInfo[] constructors = entityType.GetConstructors(BindingFlags.NonPublic |
                                                                         BindingFlags.Instance);

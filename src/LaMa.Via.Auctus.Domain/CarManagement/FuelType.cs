@@ -3,9 +3,13 @@ using LaMa.Via.Auctus.Domain.Abstractions;
 using LaMa.Via.Auctus.Domain.CarManagement.Errors;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
+
 public class FuelType : Entity<string>
 {
-    private FuelType(): base() { }
+    private FuelType()
+    {
+    }
+
     private FuelType(string type) : base(type)
     {
     }

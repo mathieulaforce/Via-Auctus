@@ -10,16 +10,18 @@ namespace LaMa.Via.Auctus.Application.CarManagement.CarModels.Create;
 
 internal class CreateCarModelCommandHandler : ICommandHandler<CreateCarModelCommand, CarModelId>
 {
-    private readonly ICarModelRepository _carModelRepository;
-    private readonly ICarBrandRepository _carBrandRepository;
+    private readonly ICarBrandWriteRepository _carBrandWriteRepository;
+    private readonly ICarModelWriteRepository _carModelWriteRepository;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateCarModelCommandHandler(ICarModelRepository carModelRepository, ICarBrandRepository carBrandRepository, IUnitOfWork unitOfWork)
+    public CreateCarModelCommandHandler(ICarModelWriteRepository carModelWriteRepository,
+        ICarBrandWriteRepository carBrandWriteRepository, IUnitOfWork unitOfWork)
     {
-        _carModelRepository = carModelRepository;
-        _carBrandRepository = carBrandRepository;
+        _carModelWriteRepository = carModelWriteRepository;
+        _carBrandWriteRepository = carBrandWriteRepository;
         _unitOfWork = unitOfWork;
     }
+
     public async Task<ErrorOr<CarModelId>> Handle(CreateCarModelCommand request, CancellationToken cancellationToken)
     {
         var model = await ValidateAndBuildValues(request, cancellationToken);
@@ -27,27 +29,30 @@ internal class CreateCarModelCommandHandler : ICommandHandler<CreateCarModelComm
         {
             return model.Errors;
         }
-        await _carModelRepository.Add(model.Value, cancellationToken);
+
+        await _carModelWriteRepository.Add(model.Value, cancellationToken);
         await _unitOfWork.SaveChangesAsync(cancellationToken);
         return model.Value.Id;
     }
-    
+
     private async Task<ErrorOr<CarModel>> ValidateAndBuildValues(CreateCarModelCommand request,
         CancellationToken cancellationToken)
     {
         var errors = new ErrorCollection();
-        
-        ErrorOr<SupportedImage?> supportedImage = string.IsNullOrWhiteSpace(request.ImageUrl) ? (SupportedImage?)null :SupportedImage.Create(request.ImageUrl) ;
+
+        ErrorOr<SupportedImage?> supportedImage = string.IsNullOrWhiteSpace(request.ImageUrl)
+            ? (SupportedImage?)null
+            : SupportedImage.Create(request.ImageUrl);
         if (supportedImage.IsError)
         {
-            errors+= supportedImage.Errors;
+            errors += supportedImage.Errors;
         }
-         
-        var brand = await _carBrandRepository.Get(request.CarBrandId, cancellationToken);
-        var existingModel = await _carModelRepository.FindByName(request.Name, cancellationToken);
+
+        var brand = await _carBrandWriteRepository.Get(request.CarBrandId, cancellationToken);
+        var existingModel = await _carModelWriteRepository.FindByName(request.Name, cancellationToken);
         if (existingModel is not null)
         {
-            errors += CarModelErrors.ModelAlreadyExists(existingModel.Id,request.Name); 
+            errors += CarModelErrors.ModelAlreadyExists(existingModel.Id, request.Name);
         }
 
         if (brand is null)

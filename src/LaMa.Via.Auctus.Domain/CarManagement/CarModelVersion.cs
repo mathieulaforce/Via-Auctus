@@ -3,7 +3,7 @@ using LaMa.Via.Auctus.Domain.Shared;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
-public sealed record CarModelVersionId 
+public sealed record CarModelVersionId
 {
     private CarModelVersionId(Guid id)
     {
@@ -25,7 +25,10 @@ public sealed record CarModelVersionId
 
 public sealed class CarModelVersion : AggregateRoot<CarModelVersionId>
 {
-    private CarModelVersion():base() {}
+    private CarModelVersion()
+    {
+    }
+
     private CarModelVersion(CarModelVersionId id, CarModelId carModelId, string name, int year,
         Engines engines,
         SupportedImage? image) : base(id)
@@ -50,8 +53,13 @@ public sealed class CarModelVersion : AggregateRoot<CarModelVersionId>
         return new CarModelVersion(id, carModelId, versionName, year, engines, image);
     }
 
-    public bool HasEngine(Engine engine)
+    public bool HasEngine(EngineId engineId)
     {
-        return Engines.Contains(engine);
+        return Engines.Contains(engineId);
+    }
+
+    public Engine GetEngine(EngineId engineId)
+    {
+        return Engines.GetEngineById(engineId);
     }
 }

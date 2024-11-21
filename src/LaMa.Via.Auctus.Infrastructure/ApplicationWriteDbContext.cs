@@ -4,12 +4,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LaMa.Via.Auctus.Infrastructure;
 
-public partial class ApplicationDbContext : DbContext, IUnitOfWork
+public class ApplicationWriteDbContext : DbContext, IUnitOfWork
 {
     private readonly DomainEventInterceptor _domainEventInterceptor;
 
-    public ApplicationDbContext(
-        DbContextOptions<ApplicationDbContext> options,
+    public ApplicationWriteDbContext(
+        DbContextOptions<ApplicationWriteDbContext> options,
         DomainEventInterceptor domainEventInterceptor
     ) : base(options)
     {
@@ -18,7 +18,9 @@ public partial class ApplicationDbContext : DbContext, IUnitOfWork
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationDbContext).Assembly);
+        modelBuilder.HasDefaultSchema(Constants.DbSchemaName);
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(ApplicationWriteDbContext).Assembly,
+            type => type.FullName?.Contains(".Configuration.Write") ?? false);
         base.OnModelCreating(modelBuilder);
     }
 

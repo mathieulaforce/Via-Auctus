@@ -6,6 +6,10 @@ namespace LaMa.Via.Auctus.Domain.CarManagement;
 
 public sealed record CarRegistration
 {
+    private CarRegistration()
+    {
+    }
+
     private CarRegistration(string licensePlate, DateOnly firstRegistrationDate, DateOnly registrationExpiryDate)
     {
         LicensePlate = licensePlate;

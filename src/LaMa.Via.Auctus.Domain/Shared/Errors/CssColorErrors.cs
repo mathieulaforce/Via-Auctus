@@ -8,7 +8,7 @@ public static class CssColorErrors
     {
         return Error.Validation(
             "CssColor.InvalidColorCode",
-            $"Invalid css color code. Supported types are hex, rgb(a) and hsl(a)"
+            "Invalid css color code. Supported types are hex, rgb(a) and hsl(a)"
         );
     }
 }

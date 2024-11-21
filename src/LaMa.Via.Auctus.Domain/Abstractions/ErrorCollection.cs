@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using ErrorOr;
-using LaMa.Via.Auctus.Domain.Shared;
 
 namespace LaMa.Via.Auctus.Domain.Abstractions;
 
@@ -24,11 +23,6 @@ public sealed class ErrorCollection : IErrorCollection
     }
 
     public bool HasErrors => Count > 0;
-
-    private void AddRange(IEnumerable<Error> errors)
-    {
-        _errors.AddRange(errors);
-    }
 
     public IEnumerator<Error> GetEnumerator()
     {
@@ -89,7 +83,12 @@ public sealed class ErrorCollection : IErrorCollection
         set => _errors[index] = value;
     }
 
-    
+    private void AddRange(IEnumerable<Error> errors)
+    {
+        _errors.AddRange(errors);
+    }
+
+
     public static ErrorCollection operator +(ErrorCollection left, ErrorCollection right)
     {
         var combinedErrors = new ErrorCollection();
@@ -118,7 +117,7 @@ public sealed class ErrorCollection : IErrorCollection
     //
     //     return combinedErrors;
     // }
-   
+
     public static implicit operator ErrorCollection(List<Error> errors)
     {
         return new ErrorCollection(errors);
@@ -133,10 +132,10 @@ public sealed class ErrorCollection : IErrorCollection
     {
         foreach (var errorOr in errors.Where(e => e != null))
         {
-            if(errorOr is { IsError: true, Errors: not null })
+            if (errorOr is { IsError: true, Errors: not null })
             {
                 _errors.AddRange(errorOr.Errors);
-            }    
+            }
         }
     }
 }

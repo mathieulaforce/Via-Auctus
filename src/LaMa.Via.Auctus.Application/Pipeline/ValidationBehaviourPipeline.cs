@@ -2,10 +2,12 @@
 using LaMa.Via.Auctus.Application.Abstractions;
 using LaMa.Via.Auctus.Application.Exceptions;
 using MediatR;
+using ValidationException = LaMa.Via.Auctus.Application.Exceptions.ValidationException;
 
 namespace LaMa.Via.Auctus.Application.Pipeline;
 
-public class ValidationBehaviourPipeline<TRequest, TResponse>: IPipelineBehavior<TRequest, TResponse> where TRequest : IBaseCommand
+public class ValidationBehaviourPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    where TRequest : IBaseCommand
 {
     private readonly IEnumerable<IValidator<TRequest>> _validators;
 
@@ -13,16 +15,17 @@ public class ValidationBehaviourPipeline<TRequest, TResponse>: IPipelineBehavior
     {
         _validators = validators;
     }
-    
-    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
+
+    public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next,
+        CancellationToken cancellationToken)
     {
         if (!_validators.Any())
         {
             return await next();
         }
-        
+
         var context = new ValidationContext<TRequest>(request);
-        
+
         var validationErrors = _validators
             .Select(validator => validator.Validate(context))
             .Where(validationResult => validationResult.Errors.Any())
@@ -34,7 +37,7 @@ public class ValidationBehaviourPipeline<TRequest, TResponse>: IPipelineBehavior
 
         if (validationErrors.Any())
         {
-            throw new Exceptions.ValidationException(validationErrors);
+            throw new ValidationException(validationErrors);
         }
 
         return await next();

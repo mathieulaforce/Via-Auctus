@@ -11,13 +11,13 @@ public class SupportedImageTests
     [InlineData(".png")]
     [InlineData(".gif")]
     [InlineData(".webp")]
-    [InlineData(".svg")] 
+    [InlineData(".svg")]
     public void SvgImageShouldReturnCorrectImage(string extension)
     {
         var svg = SupportedImage.Create($"img{extension}").Value;
         svg.Url.Should().Be($"img{extension}");
     }
-     
+
     [Fact]
     public void EmptyStringShouldReturnError()
     {
@@ -25,10 +25,10 @@ public class SupportedImageTests
         result.IsError.Should().BeTrue();
         result.FirstError.Code.Should().Be(SupportedImageErrors.IsEmpty().Code);
     }
-    
+
     [Fact]
     public void UnsupportedTypeShouldReturnError()
-    { 
+    {
         var result = SupportedImage.Create("un.supported");
         result.IsError.Should().BeTrue();
         result.FirstError.Code.Should().Be(SupportedImageErrors.InvalidExtension().Code);

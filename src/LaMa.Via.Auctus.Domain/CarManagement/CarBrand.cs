@@ -25,7 +25,10 @@ public sealed record CarBrandId
 
 public class CarBrand : Entity<CarBrandId>
 {
-    private CarBrand():base() {}
+    private CarBrand()
+    {
+    }
+
     private CarBrand(CarBrandId id, string name, CarBrandTheme theme) : base(id)
     {
         Name = name;
@@ -55,12 +58,17 @@ public class CarBrand : Entity<CarBrandId>
         {
             throw new ArgumentNullException(nameof(name));
         }
-        
-        if(Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
+
+        if (Name.Equals(name, StringComparison.InvariantCultureIgnoreCase))
         {
             return;
         }
-        
+
         Name = name;
+    }
+
+    public bool SupportsModel(CarModel model)
+    {
+        return model.CarBrandId == Id;
     }
 }

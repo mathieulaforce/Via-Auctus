@@ -6,7 +6,7 @@ using LaMa.Via.Auctus.Domain.CarManagement.Errors;
 
 namespace LaMa.Via.Auctus.Application.CarManagement.CarBrands.Create;
 
-internal class CreateCarBrandCommandHandler(ICarBrandRepository carBrandRepository, IUnitOfWork unitOfWork)
+internal class CreateCarBrandCommandHandler(ICarBrandWriteRepository carBrandWriteRepository, IUnitOfWork unitOfWork)
     : ICommandHandler<CreateCarBrandCommand, CarBrandId>
 {
     public async Task<ErrorOr<CarBrandId>> Handle(CreateCarBrandCommand request, CancellationToken cancellationToken)
@@ -16,9 +16,9 @@ internal class CreateCarBrandCommandHandler(ICarBrandRepository carBrandReposito
         {
             return result.Errors;
         }
-        
+
         var brand = result.Value;
-        await carBrandRepository.Add(brand, cancellationToken);
+        await carBrandWriteRepository.Add(brand, cancellationToken);
         await unitOfWork.SaveChangesAsync(cancellationToken);
         return brand.Id;
     }
@@ -34,11 +34,10 @@ internal class CreateCarBrandCommandHandler(ICarBrandRepository carBrandReposito
             errors += theme.Errors;
         }
 
-        var existingBrand = await carBrandRepository.FindByName(request.Name, cancellationToken);
+        var existingBrand = await carBrandWriteRepository.FindByName(request.Name, cancellationToken);
         if (existingBrand is not null)
         {
-            errors += CarBrandErrors.BrandAlreadyExists(existingBrand.Id,request.Name);
-           
+            errors += CarBrandErrors.BrandAlreadyExists(existingBrand.Id, request.Name);
         }
 
         if (errors.HasErrors)

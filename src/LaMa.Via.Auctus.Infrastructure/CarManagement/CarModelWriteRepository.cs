@@ -5,9 +5,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LaMa.Via.Auctus.Infrastructure.CarManagement;
 
-public class CarModelRepository : Repository<CarModel>, ICarModelRepository
+public class CarModelWriteRepository : WriteRepository<CarModel>, ICarModelWriteRepository
 {
-    public CarModelRepository(ApplicationDbContext context) : base(context)
+    public CarModelWriteRepository(ApplicationWriteDbContext context) : base(context)
     {
     }
 

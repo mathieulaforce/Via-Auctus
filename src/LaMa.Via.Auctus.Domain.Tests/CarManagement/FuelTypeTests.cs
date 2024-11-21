@@ -10,7 +10,7 @@ public class FuelTypeTests
         var result = FuelType.Create(string.Empty);
         result.IsError.Should().BeTrue();
     }
-    
+
     [Fact]
     public void GivenFuelTypeWhenCreateThenReturnsSuccess()
     {

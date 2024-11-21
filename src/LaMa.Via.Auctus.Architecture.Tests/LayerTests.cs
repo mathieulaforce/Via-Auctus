@@ -5,9 +5,10 @@ namespace LaMa.Via.Auctus.Architecture.Tests;
 
 public class LayerTests
 {
-    private static Assembly ApplicationAssembly = ViaAuctusAssemblies.ApplicationAssembly;
-    private static Assembly DomainAssembly = ViaAuctusAssemblies.DomainAssembly;
-    private static Assembly InfrastructureAssembly = ViaAuctusAssemblies.InfrastructureAssembly;
+    private static readonly Assembly ApplicationAssembly = ViaAuctusAssemblies.ApplicationAssembly;
+    private static readonly Assembly DomainAssembly = ViaAuctusAssemblies.DomainAssembly;
+    private static readonly Assembly InfrastructureAssembly = ViaAuctusAssemblies.InfrastructureAssembly;
+
     [Fact]
     public void DomainLayerShouldNotHaveDependencyOnApplicationLayer()
     {

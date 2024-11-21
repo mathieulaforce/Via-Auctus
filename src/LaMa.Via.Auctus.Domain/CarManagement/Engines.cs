@@ -49,4 +49,9 @@ public class Engines : EntityCollection<Engine, EngineId>
         Items.Add(engine);
         return this;
     }
+
+    public Engine GetEngineById(EngineId engineId)
+    {
+        return Items.Single(engine => engine.Id == engineId);
+    }
 }

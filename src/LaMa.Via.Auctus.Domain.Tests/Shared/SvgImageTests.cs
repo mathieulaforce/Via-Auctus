@@ -11,7 +11,7 @@ public class SvgImageTests
         var svg = SvgImage.Create("img.svg");
         svg.Value.Url.Should().Be("img.svg");
     }
-    
+
     [Fact]
     public void PngImageShouldReturnError()
     {
@@ -19,7 +19,7 @@ public class SvgImageTests
         result.IsError.Should().BeTrue();
         result.FirstError.Code.Should().Be(SvgImageErrors.InvalidExtension().Code);
     }
-    
+
     [Fact]
     public void EmptyStringShouldReturnError()
     {

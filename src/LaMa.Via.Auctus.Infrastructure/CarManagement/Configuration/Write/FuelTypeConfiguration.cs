@@ -1,9 +1,8 @@
 ﻿using LaMa.Via.Auctus.Domain.CarManagement;
-using LaMa.Via.Auctus.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
-namespace LaMa.Via.Auctus.Infrastructure.CarManagement.Configuration;
+namespace LaMa.Via.Auctus.Infrastructure.CarManagement.Configuration.Write;
 
 public class FuelTypeConfiguration : IEntityTypeConfiguration<FuelType>
 {

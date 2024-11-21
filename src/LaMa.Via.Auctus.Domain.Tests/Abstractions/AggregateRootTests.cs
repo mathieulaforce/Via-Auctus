@@ -30,9 +30,8 @@ public class AggregateRootTests
         sut1.Id.Should().NotBe(sut2.Id);
     }
 
-    private record SutAggregateRootId(Guid value) 
+    private record SutAggregateRootId(Guid value)
     {
-         
     }
 
     private class SutAggregateRoot(SutAggregateRootId id, string name) : AggregateRoot<SutAggregateRootId>(id)

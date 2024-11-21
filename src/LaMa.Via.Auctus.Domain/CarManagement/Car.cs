@@ -1,11 +1,12 @@
 ﻿using ErrorOr;
 using LaMa.Via.Auctus.Domain.Abstractions;
+using LaMa.Via.Auctus.Domain.CarManagement.Builders;
 using LaMa.Via.Auctus.Domain.CarManagement.Errors;
 using LaMa.Via.Auctus.Domain.CarManagement.Events;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
-public sealed record CarId 
+public sealed record CarId
 {
     private CarId(Guid value)
     {
@@ -27,23 +28,24 @@ public sealed record CarId
 
 public class Car : AggregateRoot<CarId>
 {
-    private Car(): base()
-    { 
+    private Car()
+    {
     }
-    private Car(CarId carId, CarBrand brand, CarModel model, CarModelVersion version, Engine engine,
+
+    private Car(CarId carId, CarBrandId brand, CarModelId model, CarModelVersionId version, EngineId engineId,
         CarRegistration? registration) : base(carId)
     {
-        Brand = brand;
-        Model = model;
-        Version = version;
-        Engine = engine;
+        BrandId = brand;
+        ModelId = model;
+        VersionId = version;
+        EngineId = engineId;
         Registration = registration;
     }
 
-    public CarBrand Brand { get; private set; }
-    public CarModel Model { get; private set; }
-    public CarModelVersion Version { get; private set; }
-    public Engine Engine { get; private set; }
+    public CarBrandId BrandId { get; private set; }
+    public CarModelId ModelId { get; private set; }
+    public CarModelVersionId VersionId { get; private set; }
+    public EngineId EngineId { get; set; }
     public CarRegistration? Registration { get; private set; }
 
     public ErrorOr<Success> Register(string licensePlate, DateOnly firstRegistration, DateOnly registrationExpiry)
@@ -64,40 +66,102 @@ public class Car : AggregateRoot<CarId>
         return Result.Success;
     }
 
-    public static ErrorOr<Car> Create(CarBrand brand, CarModel model, CarModelVersion version, Engine engine,
-        CarRegistration? registration)
+    private static Car Create(CarId carId, CarBrandId brandId, CarModelId modelId, CarModelVersionId versionId,
+        EngineId engineId, CarRegistration? registration)
     {
-        var errors = ValidateCreateCar(brand, model, version, engine);
-        if (errors.HasErrors)
-        {
-            return errors.ToList();
-        }
-
-        var carId = CarId.CreateUnique();
-        var car = new Car(carId, brand, model, version, engine, registration);
+        var car = new Car(carId, brandId, modelId, versionId, engineId, registration);
         car.RaiseDomainEvent(new CarCreatedDomainEvent(carId));
         return car;
     }
 
-    private static ErrorCollection ValidateCreateCar(CarBrand brand, CarModel model, CarModelVersion version,
-        Engine engine)
+    public static ICarBuilderBrandStep Define()
     {
-        var errors = new ErrorCollection();
-        if (model.CarBrandId != brand.Id)
+        return CarBuilder.Create();
+    }
+
+    public sealed class CarBuilder : ICarBuilder
+    {
+        private CarBrand? _brand;
+        private EngineId? _engineId;
+        private CarModel? _model;
+        private CarRegistration? _registration;
+        private CarModelVersion? _version;
+
+        public ICarBuilderModelStep WithBrand(CarBrand brand)
         {
-            errors += CarErrors.CarBrandDoesNotSupportModel(brand.Id, model.Id);
+            _brand = brand;
+            return this;
         }
 
-        if (version.CarModelId != model.Id)
+        public ICarBuilderVersionStep WithModel(CarModel model)
         {
-            errors += CarErrors.CarModelDoesNotSupportVersion(brand.Id, model.Id, version.Id);
+            _model = model;
+            return this;
         }
 
-        if (!version.HasEngine(engine))
+        public ICarBuilderOptionalSteps WithVersion(CarModelVersion version, EngineId engine)
         {
-            errors += CarErrors.CarVersionDoesNotSupportEngine(brand.Id, model.Id, version.Id, engine.Id);
+            _version = version;
+            _engineId = engine;
+            return this;
         }
 
-        return errors;
+        public ICarBuilderOptionalSteps WithRegistration(CarRegistration registration)
+        {
+            _registration = registration;
+            return this;
+        }
+
+        public ErrorOr<Car> Build()
+        {
+            var result = ValidateCreateCar(_brand, _model, _version, _engineId);
+            if (result.IsError)
+            {
+                return result.Errors;
+            }
+
+            var carId = CarId.CreateUnique();
+            var (brandId, modelId, versionId, engineId) = result.Value;
+            var car = Car.Create(carId, brandId, modelId, versionId, engineId, _registration);
+            return car;
+        }
+
+        public static ICarBuilderBrandStep Create()
+        {
+            return new CarBuilder();
+        }
+
+        private static ErrorOr<(CarBrandId, CarModelId, CarModelVersionId, EngineId)> ValidateCreateCar(CarBrand? brand,
+            CarModel? model, CarModelVersion? version,
+            EngineId? engineId)
+        {
+            ArgumentNullException.ThrowIfNull(brand, nameof(brand));
+            ArgumentNullException.ThrowIfNull(model, nameof(model));
+            ArgumentNullException.ThrowIfNull(version, nameof(version));
+            ArgumentNullException.ThrowIfNull(engineId, nameof(engineId));
+
+            var errors = new ErrorCollection();
+            if (!brand.SupportsModel(model))
+            {
+                errors += CarErrors.CarBrandDoesNotSupportModel(brand.Id, model.Id);
+            }
+
+            if (!model.SupportsVersion(version))
+            {
+                errors += CarErrors.CarModelDoesNotSupportVersion(brand.Id, model.Id, version.Id);
+            }
+
+            if (!version.HasEngine(engineId))
+            {
+                errors += CarErrors.CarVersionDoesNotSupportEngine(brand.Id, model.Id, version.Id, engineId);
+            }
+
+            if (errors.HasErrors)
+            {
+                return errors.ToList();
+            }
+
+            return (brand.Id, model.Id, version.Id, engineId);
+        }
     }
 }

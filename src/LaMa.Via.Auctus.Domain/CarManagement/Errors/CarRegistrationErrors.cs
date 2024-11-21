@@ -1,5 +1,4 @@
 ﻿using ErrorOr;
-using LaMa.Via.Auctus.Domain.Abstractions;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement.Errors;
 

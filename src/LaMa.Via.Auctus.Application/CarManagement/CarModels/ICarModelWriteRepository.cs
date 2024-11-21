@@ -2,7 +2,7 @@
 
 namespace LaMa.Via.Auctus.Application.CarManagement.CarModels;
 
-public interface ICarModelRepository
+public interface ICarModelWriteRepository
 {
     Task<CarModel?> Get(CarModelId id, CancellationToken cancellationToken = default);
     Task<CarModel?> FindByName(string name, CancellationToken cancellationToken = default);

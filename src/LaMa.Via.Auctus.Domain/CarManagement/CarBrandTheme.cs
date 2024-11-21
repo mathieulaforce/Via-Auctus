@@ -1,13 +1,15 @@
 ﻿using ErrorOr;
 using LaMa.Via.Auctus.Domain.Abstractions;
 using LaMa.Via.Auctus.Domain.Shared;
-using LaMa.Via.Auctus.Domain.Shared.Errors;
 
 namespace LaMa.Via.Auctus.Domain.CarManagement;
 
 public sealed record CarBrandTheme
 {
-    private CarBrandTheme() { }
+    private CarBrandTheme()
+    {
+    }
+
     private CarBrandTheme(CssColor primaryColor, CssColor? secondaryColor, string fontFamily, SvgImage logo)
     {
         PrimaryColor = primaryColor;
@@ -34,17 +36,17 @@ public sealed record CarBrandTheme
         var primary = CssColor.Create(primaryColor);
         var secondary = string.IsNullOrWhiteSpace(secondaryColor)
             ? (ErrorOr<CssColor>?)null
-            : CssColor.Create(secondaryColor); 
-        
+            : CssColor.Create(secondaryColor);
+
         var logo = SvgImage.Create(svgLogo);
 
         errors.AddErrorsFromError(primary, secondary, logo);
-         
+
         if (errors.HasErrors)
         {
             return errors.ToList();
         }
 
-        return Create(primary.Value,secondary?.Value, fontFamily, logo.Value);
+        return Create(primary.Value, secondary?.Value, fontFamily, logo.Value);
     }
 }

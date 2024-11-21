@@ -26,8 +26,9 @@ public sealed record EngineId
 public class Engine : Entity<EngineId>
 {
     private Engine()
-    { 
+    {
     }
+
     private Engine(EngineId id, string name, FuelType fuelType, int? horsePower, int? torque,
         EngineEfficiency efficiency) : base(id)
     {
@@ -42,17 +43,17 @@ public class Engine : Entity<EngineId>
     public FuelType FuelType { get; }
 
     /// <summary>
-    /// hp
+    ///     hp
     /// </summary>
     public int? HorsePower { get; }
 
     /// <summary>
-    /// Nm
+    ///     Nm
     /// </summary>
     public int? Torque { get; }
 
     /// <summary>
-    /// L/100KM or wh/km, requires value objects
+    ///     L/100KM or wh/km, requires value objects
     /// </summary>
     public EngineEfficiency Efficiency { get; }
 
