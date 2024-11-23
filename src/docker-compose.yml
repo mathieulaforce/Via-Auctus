@@ -1,0 +1,18 @@
+﻿services:
+  #  lama.via.auctus.console:
+  #    image: lama.via.auctus.console
+  #    build:
+  #      context: .
+  #      dockerfile: LaMa.Via.Auctus.Console/Dockerfile
+  
+  lama.via.auctus.db:
+    image: postgres:latest
+    container_name: via.auctus.database
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432

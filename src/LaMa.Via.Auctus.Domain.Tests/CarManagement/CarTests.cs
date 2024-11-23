@@ -122,6 +122,21 @@ public class CarTests
     }
 
     [Fact]
+    public void GivenInvalidRegistrationDatesCarWhenRegisteringThenReturnsError()
+    {
+        var car = CarObjectMother.UnregisteredTeslaModelYAllWheelDrive();
+
+        car.ClearDomainEvents();
+        var result = car.Register("new", new DateOnly(2050, 1, 11), new DateOnly(2028, 1, 11));
+
+        car.Registration.Should().BeNull();
+        var domainEvent = car.GetDomainEvents().Should().BeEmpty();
+        result.IsError.Should().BeTrue();
+        result.FirstError.Code.Should().Be(CarRegistrationErrors
+            .FirstRegistrationDateAfterExpiryDate(new DateOnly(2050, 1, 11), new DateOnly(2028, 1, 11)).Code);
+    }
+
+    [Fact]
     public void CreateCarWithIncorrectBrandModelThenReturnsError()
     {
         var tesla = CarBrandObjectMother.Tesla;

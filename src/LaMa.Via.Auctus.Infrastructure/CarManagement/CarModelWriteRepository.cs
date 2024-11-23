@@ -16,8 +16,8 @@ public class CarModelWriteRepository : WriteRepository<CarModel>, ICarModelWrite
         return await Entity.FirstOrDefaultAsync(model => model.Id == id, cancellationToken);
     }
 
-    public async Task<CarModel?> FindByName(string name, CancellationToken cancellationToken = default)
+    public async Task<CarModel?> FindByName(string name, CarBrandId brandId, CancellationToken cancellationToken = default)
     {
-        return await Entity.FirstOrDefaultAsync(model => model.Name == name, cancellationToken);
+        return await Entity.FirstOrDefaultAsync(model => model.Name == name && model.CarBrandId == brandId, cancellationToken);
     }
 }

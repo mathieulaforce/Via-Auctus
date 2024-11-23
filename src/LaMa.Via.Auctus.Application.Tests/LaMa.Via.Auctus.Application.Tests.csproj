@@ -5,6 +5,7 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+
     <ItemGroup>
         <PackageReference Include="FakeItEasy" Version="8.3.0"/>
         <PackageReference Include="FluentAssertions" Version="6.12.1"/>
@@ -15,7 +16,10 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
+
     <ItemGroup>
-        <ProjectReference Include="..\LaMa.Via.Auctus.Domain\LaMa.Via.Auctus.Domain.csproj"/>
+        <ProjectReference Include="..\LaMa.Via.Auctus.Application\LaMa.Via.Auctus.Application.csproj"/>
+        <ProjectReference Include="..\LaMa.Via.Auctus.Domain.Tests\LaMa.Via.Auctus.Domain.Tests.csproj"/>
     </ItemGroup>
+
 </Project>

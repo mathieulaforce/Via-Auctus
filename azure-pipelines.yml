@@ -7,15 +7,27 @@ pool:
 
 variables:
   buildConfiguration: 'Release'  # Set the build configuration
-
-steps:
+  dotnetVersion: '8.0.404'
+  
+steps: 
+- task: UseDotNet@2
+  displayName: 'Install .NET 8 SDK'
+  inputs:
+    packageType: 'sdk'
+    version: '$(dotnetVersion)'
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+  
 - task: DotNetCoreCLI@2
+  displayName: 'Build Solution'
   inputs:
     azureSubscription: 'Visual Studio Enterprise Subscription – MPN(3446f95d-1c75-4b4e-8ff8-11a5ca24f1c5)'
     command: 'build'
     projects: 'src/LaMa.Via.Auctus.sln'
+    arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
+  displayName: 'Run Unit Tests'
   inputs:
     command: 'test'
     projects: '**/*.tests.csproj'
+    arguments: '--configuration $(buildConfiguration) --no-build --logger trx'

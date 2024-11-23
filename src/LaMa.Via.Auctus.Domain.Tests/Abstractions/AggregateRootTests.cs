@@ -19,6 +19,14 @@ public class AggregateRootTests
     }
 
     [Fact]
+    public void GivenEmptyConstructorThenCreatesEmptyAggregateRoot()
+    {
+        var sut = new SutAggregateRoot();
+        sut.Name.Should().BeNull();
+        sut.Id.Should().BeNull();
+    }
+
+    [Fact]
     public void GivenAggregateRootWithDifferentIdsThenAreNotEqual()
     {
         var sut1 = new SutAggregateRoot(new SutAggregateRootId(Guid.NewGuid()), "sut");
@@ -34,8 +42,17 @@ public class AggregateRootTests
     {
     }
 
-    private class SutAggregateRoot(SutAggregateRootId id, string name) : AggregateRoot<SutAggregateRootId>(id)
+    private class SutAggregateRoot : AggregateRoot<SutAggregateRootId>
     {
-        public string Name { get; } = name;
+        public SutAggregateRoot()
+        {
+        }
+
+        public SutAggregateRoot(SutAggregateRootId id, string name) : base(id)
+        {
+            Name = name;
+        }
+
+        public string Name { get; }
     }
 }

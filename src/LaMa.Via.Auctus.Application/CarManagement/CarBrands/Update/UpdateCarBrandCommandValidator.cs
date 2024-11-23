@@ -2,11 +2,11 @@
 
 namespace LaMa.Via.Auctus.Application.CarManagement.CarBrands.Update;
 
-internal class CreateCarBrandCommandValidator : AbstractValidator<UpdateCarBrandCommand>
+internal class UpdateCarBrandCommandValidator : AbstractValidator<UpdateCarBrandCommand>
 {
-    public CreateCarBrandCommandValidator()
+    public UpdateCarBrandCommandValidator()
     {
-        RuleFor(cmd => cmd.Id).NotEmpty();
+        RuleFor(cmd => cmd.Id.Value).NotEmpty();
         RuleFor(cmd => cmd.Name).NotEmpty();
         RuleFor(cmd => cmd.PrimaryColor).NotEmpty();
         RuleFor(cmd => cmd.FontFamily).NotEmpty();

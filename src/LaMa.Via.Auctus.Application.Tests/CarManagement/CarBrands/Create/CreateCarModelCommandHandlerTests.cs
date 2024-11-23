@@ -8,13 +8,13 @@ using LaMa.Via.Auctus.Domain.Tests.CarManagement.ObjectMothers;
 
 namespace LaMa.Via.Auctus.Application.Tests.CarManagement.CarBrands.Create;
 
-public class CreateCarBrandCommandHandlerTests
+public class CreateCarModelCommandHandlerTests
 {
     private readonly ICarBrandWriteRepository _carBrandWriteRepository;
     private readonly ICommandHandler<CreateCarBrandCommand, CarBrandId> _sut;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateCarBrandCommandHandlerTests()
+    public CreateCarModelCommandHandlerTests()
     {
         _unitOfWork = A.Fake<IUnitOfWork>();
         _carBrandWriteRepository = A.Fake<ICarBrandWriteRepository>();

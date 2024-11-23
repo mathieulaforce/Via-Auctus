@@ -16,18 +16,6 @@ public class CarBrandErrors
         );
     }
 
-    public static Error BrandNotFound(string name)
-    {
-        return Error.Validation(
-            "CarBrand.NotFound",
-            "Car brand not found",
-            new Dictionary<string, object>
-            {
-                { "Name", name }
-            }
-        );
-    }
-
     public static Error BrandAlreadyExists(CarBrandId brandId, string name)
     {
         return Error.Validation(
