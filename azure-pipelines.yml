@@ -7,13 +7,22 @@ pool:
 
 variables:
   buildConfiguration: 'Release'  # Set the build configuration
-
+  dotnetVersion: '8.x'
+  
 steps:
+- task: Cache@2
+  displayName: 'Cache .NET 8 SDK'
+  inputs:
+    key: 'dotnet|$(dotnetVersion)'
+    restoreKeys: |
+      dotnet
+    path: $(Agent.ToolsDirectory)/dotnet
+      
 - task: UseDotNet@2
   displayName: 'Install .NET 8 SDK'
   inputs:
     packageType: 'sdk'
-    version: '8.x'  # Ensures the pipeline uses .NET 8 SDK
+    version: '$(dotnetVersion)'
     installationPath: $(Agent.ToolsDirectory)/dotnet
     
 - task: DotNetCoreCLI@2
