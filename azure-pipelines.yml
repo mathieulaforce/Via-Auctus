@@ -29,4 +29,4 @@ steps:
   inputs:
     command: 'test'
     projects: '**/*.tests.csproj'
-    arguments: '--configuration $(buildConfiguration)'
+    arguments: '--configuration $(buildConfiguration) --no-build --logger trx'
