@@ -9,13 +9,21 @@ variables:
   buildConfiguration: 'Release'  # Set the build configuration
 
 steps:
+- task: UseDotNet@2
+  inputs:
+    packageType: 'sdk'
+    version: '8.x'  # Ensures the pipeline uses .NET 8 SDK
+    installationPath: $(Agent.ToolsDirectory)/dotnet
+    
 - task: DotNetCoreCLI@2
   inputs:
     azureSubscription: 'Visual Studio Enterprise Subscription – MPN(3446f95d-1c75-4b4e-8ff8-11a5ca24f1c5)'
     command: 'build'
     projects: 'src/LaMa.Via.Auctus.sln'
+    arguments: '--configuration $(buildConfiguration)'
 
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
     projects: '**/*.tests.csproj'
+    arguments: '--configuration $(buildConfiguration)'
