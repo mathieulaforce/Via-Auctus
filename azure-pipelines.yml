@@ -9,15 +9,7 @@ variables:
   buildConfiguration: 'Release'  # Set the build configuration
   dotnetVersion: '8.x'
   
-steps:
-- task: Cache@2
-  displayName: 'Cache .NET 8 SDK'
-  inputs:
-    key: 'dotnet|$(dotnetVersion)'
-    restoreKeys: |
-      dotnet
-    path: $(Agent.ToolsDirectory)/dotnet
-      
+steps:  
 - task: UseDotNet@2
   displayName: 'Install .NET 8 SDK'
   inputs:
