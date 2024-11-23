@@ -3,52 +3,47 @@ using LaMa.Via.Auctus.Domain.Shared;
 
 namespace LaMa.Via.Auctus.Domain.Tests.CarManagement.ObjectMothers;
 
-public class CarBrandObjectMother
+public static class CarBrandObjectMother
 {
-    public static CarBrand Tesla()
-    {
-        return CarBrand.Create("Tesla", CarBrandTheme.Create(
+    public static CarBrand Tesla =
+        CarBrand.Create("Tesla", CarBrandTheme.Create(
             CssColor.Create("#CC0000").Value,
             CssColor.Create("#333333").Value,
             "Roboto, sans-serif",
             SvgImage.Create("tesla_logo.svg").Value
         ));
-    }
 
-    public static CarBrand Bmw()
-    {
-        return CarBrand.Create("BMW", CarBrandTheme.Create(
+    public static CarBrand Bmw =
+        CarBrand.Create("BMW", CarBrandTheme.Create(
             CssColor.Create("#0066B1").Value,
             CssColor.Create("#FFFFFF").Value,
             "Helvetica, Arial, sans-serif",
             SvgImage.Create("bmw_logo.svg").Value));
-    }
 
-    public static CarBrand Audi()
-    {
-        return CarBrand.Create("Audi", CarBrandTheme.Create(
+    public static CarBrand Audi =
+        CarBrand.Create("Audi", CarBrandTheme.Create(
             CssColor.Create("#BB0A30").Value,
             CssColor.Create("#000000").Value,
             "AudiType, sans-serif",
             SvgImage.Create("audi_logo.svg").Value));
-    }
 
-    public static CarBrand Volkswagen()
-    {
-        return CarBrand.Create("Volkswagen", CarBrandTheme.Create(
+    public static CarBrand Volkswagen =
+        CarBrand.Create("Volkswagen", CarBrandTheme.Create(
             CssColor.Create("#001489").Value,
             CssColor.Create("#FFFFFF").Value,
             "VolkswagenAG, sans-serif",
             SvgImage.Create("vw_logo.svg").Value));
-    }
 
-    public static CarBrand Skoda()
+
+    public static CarBrand Skoda = CarBrand.Create("Skoda", CarBrandTheme.Create(
+        CssColor.Create("#007C30").Value,
+        CssColor.Create("#FFFFFF").Value,
+        "SkodaPro, sans-serif",
+        SvgImage.Create("skoda_logo.svg").Value
+    ));
+
+    public static CarBrand CreateNewFrom(CarBrand carBrand)
     {
-        return CarBrand.Create("Skoda", CarBrandTheme.Create(
-            CssColor.Create("#007C30").Value,
-            CssColor.Create("#FFFFFF").Value,
-            "SkodaPro, sans-serif",
-            SvgImage.Create("skoda_logo.svg").Value
-        ));
+        return CarBrand.Create(carBrand.Name, carBrand.Theme);
     }
 }

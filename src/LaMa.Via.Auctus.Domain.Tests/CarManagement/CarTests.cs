@@ -12,7 +12,7 @@ public class CarTests
     [Fact]
     public void GivenNoRegistrationWhenCreateCarShouldCreateCarWithoutRegistration()
     {
-        var tesla = CarBrandObjectMother.Tesla();
+        var tesla = CarBrandObjectMother.Tesla;
         var modelY = CarModelObjectMother.TeslaModelY();
         var engine = EngineObjectMother.UnknownElectricEngine;
         var engines = new Engines();
@@ -52,7 +52,7 @@ public class CarTests
     [Fact]
     public void GivenCarWithRegistrationWhenCreateCarShouldCreateCarWithRegistration()
     {
-        var tesla = CarBrandObjectMother.Tesla();
+        var tesla = CarBrandObjectMother.Tesla;
         var modelY = CarModelObjectMother.TeslaModelY();
         var engine = EngineObjectMother.UnknownElectricEngine;
         var engines = new Engines();
@@ -139,7 +139,7 @@ public class CarTests
     [Fact]
     public void CreateCarWithIncorrectBrandModelThenReturnsError()
     {
-        var tesla = CarBrandObjectMother.Tesla();
+        var tesla = CarBrandObjectMother.Tesla;
         var modelY = CarModelObjectMother.BmwX1();
         var engine = EngineObjectMother.UnknownElectricEngine;
         var engines = new Engines();
@@ -158,7 +158,7 @@ public class CarTests
     [Fact]
     public void CreateCarWithIncorrectVersionReturnsError()
     {
-        var tesla = CarBrandObjectMother.Tesla();
+        var tesla = CarBrandObjectMother.Tesla;
         var modelY = CarModelObjectMother.TeslaModelY();
         var engine = EngineObjectMother.UnknownElectricEngine;
         var engines = new Engines();
@@ -180,7 +180,7 @@ public class CarTests
     [Fact]
     public void CreateCarWithUnsupportedEngineReturnsError()
     {
-        var tesla = CarBrandObjectMother.Tesla();
+        var tesla = CarBrandObjectMother.Tesla;
         var modelY = CarModelObjectMother.TeslaModelY();
         var engine = EngineObjectMother.UnknownElectricEngine;
         var unsupportedEngine = Engine.Create("Unsupported", FuelType.Create("unknown").Value, null, null,

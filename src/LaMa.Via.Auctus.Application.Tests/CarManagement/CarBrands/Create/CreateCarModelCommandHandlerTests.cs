@@ -8,13 +8,13 @@ using LaMa.Via.Auctus.Domain.Tests.CarManagement.ObjectMothers;
 
 namespace LaMa.Via.Auctus.Application.Tests.CarManagement.CarBrands.Create;
 
-public class CreateCarBrandCommandHandlerTests
+public class CreateCarModelCommandHandlerTests
 {
     private readonly ICarBrandWriteRepository _carBrandWriteRepository;
     private readonly ICommandHandler<CreateCarBrandCommand, CarBrandId> _sut;
     private readonly IUnitOfWork _unitOfWork;
 
-    public CreateCarBrandCommandHandlerTests()
+    public CreateCarModelCommandHandlerTests()
     {
         _unitOfWork = A.Fake<IUnitOfWork>();
         _carBrandWriteRepository = A.Fake<ICarBrandWriteRepository>();
@@ -52,7 +52,7 @@ public class CreateCarBrandCommandHandlerTests
     [Fact]
     public async Task GivenExistingBrandWhenHandleThenReturnError()
     {
-        var existingBrand = CarBrandObjectMother.Tesla();
+        var existingBrand = CarBrandObjectMother.Tesla;
         A.CallTo(() => _carBrandWriteRepository.FindByName("Tesla", default)).Returns(existingBrand);
 
         var command = new CreateCarBrandCommand("Tesla", "#CC0000", "#333333", "Roboto, sans-serif", "tesla_logo.svg");

@@ -6,7 +6,7 @@ public class CarObjectMother
 {
     public static Car UnregisteredTeslaModelYAllWheelDrive()
     {
-        var tesla = CarBrandObjectMother.Tesla();
+        var tesla = CarBrandObjectMother.Tesla;
         var modelY = CarModelObjectMother.TeslaModelY();
         var engine = EngineObjectMother.UnknownElectricEngine;
         var engines = new Engines();
@@ -23,7 +23,7 @@ public class CarObjectMother
 
     public static Car RegisteredTeslaModelYAllWheelDrive()
     {
-        var tesla = CarBrandObjectMother.Tesla();
+        var tesla = CarBrandObjectMother.Tesla;
         var modelY = CarModelObjectMother.TeslaModelY();
         var engine = EngineObjectMother.UnknownElectricEngine;
         var engines = new Engines();

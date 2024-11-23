@@ -110,18 +110,6 @@ internal class CreateCarCommandHandler : ICommandHandler<CreateCarCommand, CarId
         var registrationOrError = CarRegistration.Create(registrationInformation.LicencePlate,
             registrationInformation.FirstRegistrationDate,
             registrationInformation.RegistrationExpiryDate);
-        return registrationOrError;
-    }
-
-    private async Task<ErrorOr<T>> FetchObjectOrReturnNotFoundError<T>(Task<T> task, object id,
-        CancellationToken cancellationToken)
-    {
-        var result = await task;
-        if (result == null)
-        {
-            return GeneralErrors.NotFound(nameof(CarModelVersion), id);
-        }
-
-        return result;
+        return registrationOrError!;
     }
 }

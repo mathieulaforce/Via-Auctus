@@ -1,25 +1,22 @@
 ﻿using LaMa.Via.Auctus.Application.Abstractions;
 using LaMa.Via.Auctus.Application.CarManagement.CarBrands;
-using LaMa.Via.Auctus.Application.CarManagement.CarBrands.Create;
 using LaMa.Via.Auctus.Application.CarManagement.CarModels;
 using LaMa.Via.Auctus.Application.CarManagement.CarModelVersions;
 using LaMa.Via.Auctus.Application.CarManagement.Cars;
 using LaMa.Via.Auctus.Application.CarManagement.Cars.Create;
 using LaMa.Via.Auctus.Domain.CarManagement;
-using LaMa.Via.Auctus.Domain.CarManagement.Errors;
-using LaMa.Via.Auctus.Domain.Shared.Errors;
 using LaMa.Via.Auctus.Domain.Tests.CarManagement.ObjectMothers;
 
 namespace LaMa.Via.Auctus.Application.Tests.CarManagement.Cars.Create;
 
 public class CreateCarCommandHandlerTests
 {
-    private readonly ICommandHandler<CreateCarCommand, CarId> _sut;
-    private readonly IUnitOfWork _unitOfWork; 
-    private readonly ICarWriteRepository _carWriteRepository;
     private readonly ICarBrandWriteRepository _carBrandWriteRepository;
-    private readonly ICarModelWriteRepository _carModelWriteRepository;
     private readonly ICarModelVersionWriteRepository _carModelVersionWriteRepository;
+    private readonly ICarModelWriteRepository _carModelWriteRepository;
+    private readonly ICarWriteRepository _carWriteRepository;
+    private readonly ICommandHandler<CreateCarCommand, CarId> _sut;
+    private readonly IUnitOfWork _unitOfWork;
 
     public CreateCarCommandHandlerTests()
     {
@@ -28,29 +25,85 @@ public class CreateCarCommandHandlerTests
         _carBrandWriteRepository = A.Fake<ICarBrandWriteRepository>();
         _carModelWriteRepository = A.Fake<ICarModelWriteRepository>();
         _carModelVersionWriteRepository = A.Fake<ICarModelVersionWriteRepository>();
-        _sut = new CreateCarCommandHandler(_carWriteRepository, _carBrandWriteRepository,_carModelWriteRepository,_carModelVersionWriteRepository, _unitOfWork);
+        _sut = new CreateCarCommandHandler(_carWriteRepository, _carBrandWriteRepository, _carModelWriteRepository,
+            _carModelVersionWriteRepository, _unitOfWork);
     }
 
     [Fact]
     public async Task GivenCarWithoutRegistrationWhenHandleThenCreateCar()
-    {
-        var tesla = CarObjectMother.RegisteredTeslaModelYAllWheelDrive();
+    { 
+        var brand = CarBrandObjectMother.Tesla;
+        var model = CarModelObjectMother.TeslaModelY(); 
         var engine = EngineObjectMother.TeslaModel3Motor;
         var engines = new Engines();
         engines.AddEngine(engine);
-        
-        A.CallTo(() => _carBrandWriteRepository.Get(tesla.BrandId, default)).Returns(CarBrandObjectMother.Tesla());
-        A.CallTo(() => _carModelWriteRepository.Get(tesla.ModelId, default)).Returns(CarModelObjectMother.TeslaModelY());
-        A.CallTo(() => _carModelVersionWriteRepository.Get(tesla.VersionId, default)).Returns(CarModelVersion.Create(tesla.ModelId, "Long Range All-Wheel Drive", 2024, engines, default));
-         
-        var command = new CreateCarCommand(tesla.BrandId, tesla.ModelId, tesla.VersionId, tesla.EngineId, null );
-        var result = await _sut.Handle(command, default);
+        var version = CarModelVersion.Create(model.Id, "Long Range All-Wheel Drive", 2024, engines);
+
+        A.CallTo(() => _carBrandWriteRepository.Get(brand.Id, default)).Returns(brand);
+        A.CallTo(() => _carModelWriteRepository.Get(model.Id, default)).Returns(model);
+        A.CallTo(() => _carModelVersionWriteRepository.Get(version.Id, default)).Returns(version);
+        var capturedCar = A.Captured<Car>();
+        A.CallTo(() => _carWriteRepository.Add(capturedCar._, default)).DoesNothing();
+
+        var command = new CreateCarCommand(brand.Id, model.Id, version.Id, engine.Id, null);
+        var result = await _sut.Handle(command, default); 
         
         result.IsError.Should().BeFalse();
-        result.Value.Should().BeOfType<CarBrandId>().Subject.Value.Should().NotBeEmpty();
+        var carToAssert = capturedCar.GetLastValue();
+        carToAssert.BrandId.Should().Be(brand.Id);
+        carToAssert.ModelId.Should().Be(model.Id);
+        carToAssert.VersionId.Should().Be(version.Id);
+        carToAssert.Registration.Should().BeNull();
+        
         A.CallTo(() => _unitOfWork.SaveChangesAsync(default)).MustHaveHappened();
-        A.CallTo(() => _carBrandWriteRepository.FindByName("Tesla", default)).MustHaveHappened();
     }
+    
+    [Fact]
+    public async Task GivenCarWithRegistrationWhenHandleThenCreateCar()
+    { 
+        var brand = CarBrandObjectMother.Tesla;
+        var model = CarModelObjectMother.TeslaModelY(); 
+        var engine = EngineObjectMother.TeslaModel3Motor;
+        var engines = new Engines();
+        engines.AddEngine(engine);
+        var version = CarModelVersion.Create(model.Id, "Long Range All-Wheel Drive", 2024, engines);
+        var registration = new CarRegistrationInformation("Sample License Plate", DateOnly.MinValue, DateOnly.MaxValue);
+        
+        A.CallTo(() => _carBrandWriteRepository.Get(brand.Id, default)).Returns(brand);
+        A.CallTo(() => _carModelWriteRepository.Get(model.Id, default)).Returns(model);
+        A.CallTo(() => _carModelVersionWriteRepository.Get(version.Id, default)).Returns(version);
+        var capturedCar = A.Captured<Car>();
+        A.CallTo(() => _carWriteRepository.Add(capturedCar._, default)).DoesNothing();
 
-
+        var command = new CreateCarCommand(brand.Id, model.Id, version.Id, engine.Id, registration);
+        var result = await _sut.Handle(command, default); 
+        
+        result.IsError.Should().BeFalse();
+        var carToAssert = capturedCar.GetLastValue();
+        carToAssert.BrandId.Should().Be(brand.Id);
+        carToAssert.ModelId.Should().Be(model.Id);
+        carToAssert.VersionId.Should().Be(version.Id);
+        carToAssert.Registration.Should().Be(CarRegistration.Create(registration.LicencePlate,registration.FirstRegistrationDate,registration.RegistrationExpiryDate).Value);
+        A.CallTo(() => _unitOfWork.SaveChangesAsync(default)).MustHaveHappened();
+    }
+    
+    [Fact]
+    public async Task GivenInvalidCarWhenHandleThenReturnsErrors()
+    { 
+        var brand = CarBrandObjectMother.Tesla;
+        var model = CarModelObjectMother.TeslaModelY(); 
+        var engine = EngineObjectMother.TeslaModel3Motor;
+        var engines = new Engines();
+        engines.AddEngine(engine);
+        var version = CarModelVersion.Create(model.Id, "Long Range All-Wheel Drive", 2024, engines);
+        var registration = new CarRegistrationInformation("Sample License Plate", DateOnly.MaxValue, DateOnly.MinValue);
+         
+        var command = new CreateCarCommand(brand.Id, model.Id, version.Id, engine.Id, registration);
+        var result = await _sut.Handle(command, default); 
+        
+        result.IsError.Should().BeTrue();
+        result.Errors.Count.Should().Be(4);
+        
+        A.CallTo(() => _unitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
+    }
 }

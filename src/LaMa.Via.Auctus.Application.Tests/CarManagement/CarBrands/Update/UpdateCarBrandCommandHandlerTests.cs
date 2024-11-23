@@ -23,7 +23,7 @@ public class UpdateCarBrandCommandHandlerTests
     [Fact]
     public async Task GivenExistingBrandWhenHandleThenUpdateBrand()
     {
-        var tesla = CarBrandObjectMother.Tesla();
+        var tesla = CarBrandObjectMother.Tesla;
         A.CallTo(() => _carBrandWriteRepository.Get(tesla.Id, default)).Returns(tesla);
         A.CallTo(() => _carBrandWriteRepository.FindByName("TEST", default)).Returns((CarBrand?)null);
 
@@ -40,13 +40,13 @@ public class UpdateCarBrandCommandHandlerTests
         tesla.Theme.SecondaryColor!.Code.Should().Be("#AAA");
         tesla.Theme.Logo.Url.Should().Be("test.svg");
     }
-    
+
     [Fact]
     public async Task GivenNonExistingCarBrandWhenHandleThenReturnsError()
     {
-        var tesla = CarBrandObjectMother.Tesla();
+        var tesla = CarBrandObjectMother.Tesla;
         A.CallTo(() => _carBrandWriteRepository.Get(tesla.Id, default)).Returns((CarBrand?)null);
-        A.CallTo(() => _carBrandWriteRepository.FindByName("audi", default)).Returns(CarBrandObjectMother.Audi());
+        A.CallTo(() => _carBrandWriteRepository.FindByName("audi", default)).Returns(CarBrandObjectMother.Audi);
 
         var command = new UpdateCarBrandCommand(tesla.Id, "audi", "#FFF", "#AAA", "Some random font", "test.svg");
         var result = await _sut.Handle(command, default);
@@ -54,15 +54,15 @@ public class UpdateCarBrandCommandHandlerTests
         result.IsError.Should().BeTrue();
         result.FirstError.Code.Should().Be(CarBrandErrors.BrandNotFound(tesla.Id).Code);
         A.CallTo(() => _unitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
-        A.CallTo(() => _carBrandWriteRepository.FindByName("audi", default)).MustHaveHappened(); 
+        A.CallTo(() => _carBrandWriteRepository.FindByName("audi", default)).MustHaveHappened();
     }
-     
+
     [Fact]
     public async Task GivenBrandWithSameNameWhenHandleThenReturnsError()
     {
-        var tesla = CarBrandObjectMother.Tesla();
+        var tesla = CarBrandObjectMother.Tesla;
         A.CallTo(() => _carBrandWriteRepository.Get(tesla.Id, default)).Returns(tesla);
-        A.CallTo(() => _carBrandWriteRepository.FindByName("audi", default)).Returns(CarBrandObjectMother.Audi());
+        A.CallTo(() => _carBrandWriteRepository.FindByName("audi", default)).Returns(CarBrandObjectMother.Audi);
 
         var command = new UpdateCarBrandCommand(tesla.Id, "audi", "#FFF", "#AAA", "Some random font", "test.svg");
         var result = await _sut.Handle(command, default);
@@ -70,6 +70,6 @@ public class UpdateCarBrandCommandHandlerTests
         result.IsError.Should().BeTrue();
         result.FirstError.Code.Should().Be(CarBrandErrors.BrandAlreadyExists(tesla.Id, "audi").Code);
         A.CallTo(() => _unitOfWork.SaveChangesAsync(default)).MustNotHaveHappened();
-        A.CallTo(() => _carBrandWriteRepository.FindByName("audi", default)).MustHaveHappened(); 
+        A.CallTo(() => _carBrandWriteRepository.FindByName("audi", default)).MustHaveHappened();
     }
 }
