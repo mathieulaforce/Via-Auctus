@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\LaMa.Via.Auctus.Application\LaMa.Via.Auctus.Application.csproj"/>
+        <ProjectReference Include="..\LaMa.Via.Auctus.Domain\LaMa.Via.Auctus.Domain.csproj"/>
+        <ProjectReference Include="..\LaMa.Via.Auctus.Infrastructure\LaMa.Via.Auctus.Infrastructure.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="FluentAssertions" Version="6.12.1"/>
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1"/>
+        <PackageReference Include="NetArchTest.Rules" Version="1.3.2"/>
+        <PackageReference Include="xunit" Version="2.9.2"/>
+    </ItemGroup>
+
+</Project>
