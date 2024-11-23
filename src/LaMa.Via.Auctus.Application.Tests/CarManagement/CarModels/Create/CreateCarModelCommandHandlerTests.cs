@@ -52,7 +52,7 @@ public class CreateCarModelCommandHandlerTests
         var command = new CreateCarModelCommand(existingModel.Name,brand.Id);
         var result = await _sut.Handle(command, default);
 
-        result.IsError.Should().BeFalse(); 
+        result.IsError.Should().BeTrue(); 
         A.CallTo(() => _unitOfWork.SaveChangesAsync(default)).MustNotHaveHappened(); 
     }
     
