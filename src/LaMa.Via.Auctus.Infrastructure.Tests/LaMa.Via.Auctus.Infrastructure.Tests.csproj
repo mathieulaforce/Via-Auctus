@@ -1,6 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
         <TargetFramework>net8.0</TargetFramework>
         <RootNamespace>LaMa.Via_Auctus.Infrastructure.Tests</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -10,12 +11,20 @@
     <ItemGroup>
         <PackageReference Include="FakeItEasy"/>
         <PackageReference Include="FluentAssertions"/>
-        <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+        <PackageReference Include="Microsoft.EntityFrameworkCore" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.InMemory" />
+        <PackageReference Include="Microsoft.NET.Test.Sdk"/> 
+        <PackageReference Include="NetArchTest.Rules" /> 
         <PackageReference Include="xunit"/>
         <PackageReference Include="xunit.runner.visualstudio">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\LaMa.Via.Auctus.Domain.Tests\LaMa.Via.Auctus.Domain.Tests.csproj" />
+      <ProjectReference Include="..\LaMa.Via.Auctus.Infrastructure\LaMa.Via.Auctus.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>

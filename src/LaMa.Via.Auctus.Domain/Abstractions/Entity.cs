@@ -24,7 +24,7 @@ public abstract class Entity<TId> : IEquatable<Entity<TId>>, IHasDomainEvents
 
     public IReadOnlyList<IDomainEvent> GetDomainEvents()
     {
-        return _domainEvents.AsReadOnly();
+        return _domainEvents.ToList().AsReadOnly();
     }
 
     public void ClearDomainEvents()

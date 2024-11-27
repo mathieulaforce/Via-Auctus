@@ -1,10 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LaMa.Via.Auctus.Application.Abstractions;
+using Microsoft.EntityFrameworkCore;
 
 namespace LaMa.Via.Auctus.Infrastructure.Abstractions;
 
-public interface IReadRepository
-{
-}
 
 public abstract class ReadRepository<TEntity> : IReadRepository where TEntity : class
 {

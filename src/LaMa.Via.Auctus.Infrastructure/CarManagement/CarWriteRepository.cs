@@ -1,18 +1,13 @@
 ﻿using LaMa.Via.Auctus.Application.CarManagement.Cars;
 using LaMa.Via.Auctus.Domain.CarManagement;
-using LaMa.Via.Auctus.Infrastructure.Abstractions;
-using Microsoft.EntityFrameworkCore;
+using LaMa.Via.Auctus.Infrastructure.Abstractions; 
 
 namespace LaMa.Via.Auctus.Infrastructure.CarManagement;
 
-public class CarWriteRepository : WriteRepository<Car>, ICarWriteRepository
+internal class CarWriteRepository : WriteRepository<Car, CarId>, ICarWriteRepository
 {
     public CarWriteRepository(ApplicationWriteDbContext context) : base(context)
     {
     }
-
-    public async Task<Car?> Get(CarId id, CancellationToken cancellationToken = default)
-    {
-        return await Entity.FirstOrDefaultAsync(car => car.Id == id, cancellationToken);
-    }
+ 
 }
