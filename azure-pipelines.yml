@@ -10,12 +10,12 @@ variables:
   dotnetVersion: '8.0.404'
   
 steps: 
-- task: UseDotNet@2
-  displayName: 'Install .NET 8 SDK'
-  inputs:
-    packageType: 'sdk'
-    version: '$(dotnetVersion)'
-    installationPath: $(Agent.ToolsDirectory)/dotnet
+#- task: UseDotNet@2
+#  displayName: 'Install .NET 8 SDK'
+#  inputs:
+#    packageType: 'sdk'
+#    version: '$(dotnetVersion)'
+#    installationPath: $(Agent.ToolsDirectory)/dotnet
   
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'
