@@ -2,4 +2,4 @@
 
 namespace LaMa.Via.Auctus.Domain.CarManagement.Events;
 
-public sealed record CarBrandCreatedDomainEvent(CarBrandId CarId) : IDomainEvent;
+public sealed record CarBrandCreatedDomainEvent(CarBrandId CarBrandId) : IDomainEvent;

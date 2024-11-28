@@ -5,17 +5,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LaMa.Via.Auctus.Infrastructure.CarManagement;
 
-public class CarBrandWriteRepository : WriteRepository<CarBrand>, ICarBrandWriteRepository
+internal class CarBrandWriteRepository : WriteRepository<CarBrand, CarBrandId>, ICarBrandWriteRepository
 {
     public CarBrandWriteRepository(ApplicationWriteDbContext context) : base(context)
     {
     }
-
-    public async Task<CarBrand?> Get(CarBrandId id, CancellationToken cancellationToken = default)
-    {
-        return await Entity.FirstOrDefaultAsync(brand => brand.Id == id, cancellationToken);
-    }
-
+ 
     public async Task<CarBrand?> FindByName(string name, CancellationToken cancellationToken = default)
     {
         return await Entity.FirstOrDefaultAsync(brand => brand.Name == name, cancellationToken);

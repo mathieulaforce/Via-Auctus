@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LaMa.Via.Auctus.Infrastructure.CarManagement;
 
-public class CarReadRepository : ReadRepository<CarDao>, ICarReadRepository
+internal class CarReadRepository : ReadRepository<CarDao>, ICarReadRepository
 {
     public CarReadRepository(ApplicationReadDbContext context) : base(context)
     {
