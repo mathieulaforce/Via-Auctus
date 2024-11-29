@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaMa.Via.Auctus.Architectur
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaMa.Via.Auctus.Infrastructure.Tests", "LaMa.Via.Auctus.Infrastructure.Tests\LaMa.Via.Auctus.Infrastructure.Tests.csproj", "{CE53780B-5E43-4AE6-9951-3A72476ABD5E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LaMa.Via.Auctus.Api", "LaMa.Via.Auctus.Api\LaMa.Via.Auctus.Api.csproj", "{1A618ABE-100E-4178-9BF7-8E15DBC73707}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -65,6 +67,10 @@ Global
 		{CE53780B-5E43-4AE6-9951-3A72476ABD5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CE53780B-5E43-4AE6-9951-3A72476ABD5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CE53780B-5E43-4AE6-9951-3A72476ABD5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A618ABE-100E-4178-9BF7-8E15DBC73707}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A618ABE-100E-4178-9BF7-8E15DBC73707}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A618ABE-100E-4178-9BF7-8E15DBC73707}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A618ABE-100E-4178-9BF7-8E15DBC73707}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{14FC7357-A9BA-471A-9572-F8F765B7EB89} = {48BA36A3-97B0-47E0-AC58-82C7A633F03F}
