@@ -3,11 +3,12 @@ trigger:
 - trunk  # Change this to your default branch
 
 pool:
-  vmImage: 'windows-latest'  # Use a Windows VM for .NET builds
+  vmImage: 'windows-latest'   
 
 variables:
-  buildConfiguration: 'Release'  # Set the build configuration
+  buildConfiguration: 'Release'   
   dotnetVersion: '8.0.404'
+  buildVersion: '1.0.0.$(Build.BuildId)'
   
 steps: 
 #- task: UseDotNet@2
@@ -16,6 +17,12 @@ steps:
 #    packageType: 'sdk'
 #    version: '$(dotnetVersion)'
 #    installationPath: $(Agent.ToolsDirectory)/dotnet
+  
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'build'
+    projects: '**/*.csproj'
+    arguments: '-p:BuildVersion=$(buildVersion)'
   
 - task: DotNetCoreCLI@2
   displayName: 'Build Solution'
