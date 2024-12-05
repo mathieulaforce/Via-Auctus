@@ -25,6 +25,9 @@ var apiVersioning = app.NewApiVersionSet()
     .ReportApiVersions()
     .Build();
 var apiVersionRouteBuilder = app.MapGroup("api/v{version:apiVersion}").WithApiVersionSet(apiVersioning);
+
+app.UseCors();
+
 app.UseLaMaEndpoints(apiVersionRouteBuilder);
 
 app.Run();

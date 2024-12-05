@@ -20,6 +20,20 @@ public static class DependencyInjection
             options.GroupNameFormat = "'v'V";
             options.SubstituteApiVersionInUrl = true;
         });
+
+
+        var origins = config.GetSection("CORS:Origins").GetChildren().Select(c =>c.Value).ToArray();
+        services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(
+                builder =>
+                {
+                    builder.WithOrigins((origins ?? [])!);
+                    builder.SetIsOriginAllowed(origin => true);
+                    builder.AllowAnyMethod();
+                    builder.AllowAnyHeader();
+                });
+        });
         
         services.AddProblemDetails(); 
         services.AddEndpoints();
