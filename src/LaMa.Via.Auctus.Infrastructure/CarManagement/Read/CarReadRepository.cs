@@ -3,7 +3,7 @@ using LaMa.Via.Auctus.Application.CarManagement.Models;
 using LaMa.Via.Auctus.Infrastructure.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
-namespace LaMa.Via.Auctus.Infrastructure.CarManagement;
+namespace LaMa.Via.Auctus.Infrastructure.CarManagement.Read;
 
 internal class CarReadRepository : ReadRepository<CarDao>, ICarReadRepository
 {

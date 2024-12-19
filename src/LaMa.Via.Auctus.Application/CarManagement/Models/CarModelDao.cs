@@ -8,4 +8,5 @@ public class CarModelDao
     public Guid BrandId { get; init; }
 
     public ICollection<CarModelVersionDao> Versions { get; init; }
+    public string? ImageUrl { get; init; }
 }

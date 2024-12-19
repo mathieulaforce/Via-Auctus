@@ -49,7 +49,8 @@ internal class CreateCarModelCommandHandler : ICommandHandler<CreateCarModelComm
         }
 
         var brand = await _carBrandWriteRepository.Get(request.CarBrandId, cancellationToken);
-        var existingModel = await _carModelWriteRepository.FindByName(request.Name, request.CarBrandId, cancellationToken);
+        var existingModel =
+            await _carModelWriteRepository.FindByName(request.Name, request.CarBrandId, cancellationToken);
         if (existingModel is not null)
         {
             errors += CarModelErrors.ModelAlreadyExists(existingModel.Id, request.Name);

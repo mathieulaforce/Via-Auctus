@@ -21,10 +21,10 @@ public class CarBrandConfiguration : IEntityTypeConfiguration<CarBrand>
         {
             themeBuilder.OwnsOne(theme => theme.PrimaryColor, colorBuilder =>
             {
-                colorBuilder.Property(color => color.Code)
-                    .IsRequired()
-                    .HasMaxLength(30)
-                    .HasColumnName("Theme_PrimaryColor")
+                RelationalPropertyBuilderExtensions
+                    .HasColumnName<string>(colorBuilder.Property(color => color.Code)
+                        .IsRequired()
+                        .HasMaxLength(30), "Theme_PrimaryColor")
                     .HasConversion(
                         colorCode => colorCode,
                         code => CssColor.Create(code).Value.Code);
@@ -32,8 +32,8 @@ public class CarBrandConfiguration : IEntityTypeConfiguration<CarBrand>
 
             themeBuilder.OwnsOne(theme => theme.SecondaryColor, colorBuilder =>
             {
-                colorBuilder.Property(color => color.Code)
-                    .HasColumnName("Theme_SecondaryColor")
+                RelationalPropertyBuilderExtensions
+                    .HasColumnName(colorBuilder.Property(color => color.Code), "Theme_SecondaryColor")
                     .HasMaxLength(30)
                     .HasConversion(
                         colorCode => colorCode,
@@ -42,9 +42,9 @@ public class CarBrandConfiguration : IEntityTypeConfiguration<CarBrand>
 
             themeBuilder.OwnsOne(theme => theme.Logo, logoBuilder =>
             {
-                logoBuilder.Property(logo => logo.Url)
-                    .IsRequired()
-                    .HasColumnName("Theme_LogoUrl")
+                RelationalPropertyBuilderExtensions
+                    .HasColumnName<string>(logoBuilder.Property(logo => logo.Url)
+                        .IsRequired(), "Theme_LogoUrl")
                     .HasConversion(
                         url => url,
                         url => SvgImage.Create(url).Value.Url);

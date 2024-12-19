@@ -1,5 +1,5 @@
 ﻿using System.Reflection;
-using LaMa.Via.Auctus.Application.Abstractions; 
+using LaMa.Via.Auctus.Application.Abstractions;
 using NetArchTest.Rules;
 
 namespace LaMa.Via.Auctus.Architecture.Tests;
@@ -22,7 +22,7 @@ public class InfrastructureTests
             .HaveNameEndingWith("WriteRepository")
             .GetResult();
 
-            result.IsSuccessful.Should().BeTrue(string.Join(", ",result.FailingTypeNames??[]));
+        result.IsSuccessful.Should().BeTrue(string.Join(", ", result.FailingTypeNames ?? []));
     }
 
     [Fact]
@@ -37,9 +37,9 @@ public class InfrastructureTests
             .NotBePublic()
             .GetResult();
 
-        result.IsSuccessful.Should().BeTrue(string.Join(", ",result.FailingTypeNames??[]));
+        result.IsSuccessful.Should().BeTrue(string.Join(", ", result.FailingTypeNames ?? []));
     }
-    
+
     [Fact]
     public void GivenReadRepositoryShouldHaveNameEndingWithWriteRepository()
     {
@@ -54,7 +54,7 @@ public class InfrastructureTests
             .HaveNameEndingWith("ReadRepository")
             .GetResult();
 
-        result.IsSuccessful.Should().BeTrue(string.Join(", ",result.FailingTypeNames??[]));
+        result.IsSuccessful.Should().BeTrue(string.Join(", ", result.FailingTypeNames ?? []));
     }
 
     [Fact]
@@ -69,7 +69,6 @@ public class InfrastructureTests
             .NotBePublic()
             .GetResult();
 
-        result.IsSuccessful.Should().BeTrue(string.Join(", ",result.FailingTypeNames??[]));
+        result.IsSuccessful.Should().BeTrue(string.Join(", ", result.FailingTypeNames ?? []));
     }
- 
 }

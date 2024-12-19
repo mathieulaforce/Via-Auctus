@@ -1,11 +1,12 @@
 ﻿using System.Reflection;
 using LaMa.Via.Auctus.Application.Abstractions;
-using LaMa.Via.Auctus.Infrastructure.Abstractions;
+using LaMa.Via.Auctus.Application.Common;
 using LaMa.Via.Auctus.Infrastructure.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using NodaTime;
 
 namespace LaMa.Via.Auctus.Infrastructure;
 
@@ -21,6 +22,14 @@ public static class DependencyInjection
 
         services.AddScoped<IUnitOfWork>(sp => sp.GetRequiredService<ApplicationWriteDbContext>());
 
+        services.AddSingleton<IClock>(SystemClock.Instance);
+        services.AddSingleton<ZonedClock>(sp =>
+        {
+            var clock = sp.GetRequiredService<IClock>();
+            return new ZonedClock(clock, DateTimeZone.Utc, CalendarSystem.Iso);
+        });
+
+        services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
         services.AddScoped<DomainEventInterceptor>();
 
         return services;

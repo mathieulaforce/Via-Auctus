@@ -1,0 +1,16 @@
+@carId = da25b825-fcbe-40a5-bd66-ac18b1956124
+@teslaBrandId = f5c7c4b4-4faf-44cb-b8b9-41dcf58381d0 
+
+### BRANDS
+### 
+ 
+GET {{client.host.url}}/carmanagement/car-brands/lookup
+Accept: application/json
+
+
+###  MODELS
+###
+GET {{client.host.url}}/carmanagement/car-models/brand/{{teslaBrandId}}
+Accept: application/json
+
+ 

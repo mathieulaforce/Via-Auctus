@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    background-color: bisque;
+}
+
+.test{
+    background-color: red;
+}
+
+@layer base {
+    :root {
+      --primary: 0 0% 98%;
+      --primary-foreground: 0 0% 9%;
+    }
+  }
+  

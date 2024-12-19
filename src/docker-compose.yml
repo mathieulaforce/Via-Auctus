@@ -16,3 +16,9 @@
       - ./.containers/database:/var/lib/postgresql/data
     ports:
       - 5432:5432
+
+  lama.via.auctus.api:
+    image: lama.via.auctus.api
+    build:
+      context: .
+      dockerfile: LaMa.Via.Auctus.Api/Dockerfile
