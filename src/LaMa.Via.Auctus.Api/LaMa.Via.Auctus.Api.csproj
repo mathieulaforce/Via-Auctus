@@ -9,21 +9,21 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Asp.Versioning.Http" />
-        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer" />
+        <PackageReference Include="Asp.Versioning.Http"/>
+        <PackageReference Include="Asp.Versioning.Mvc.ApiExplorer"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi"/>
-        <PackageReference Include="NodaTime.Serialization.SystemTextJson" />
+        <PackageReference Include="NodaTime.Serialization.SystemTextJson"/>
     </ItemGroup>
 
     <ItemGroup>
-      <Content Include="..\.dockerignore">
-        <Link>.dockerignore</Link>
-      </Content>
+        <Content Include="..\.dockerignore">
+            <Link>.dockerignore</Link>
+        </Content>
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\LaMa.Via.Auctus.Application\LaMa.Via.Auctus.Application.csproj" />
-      <ProjectReference Include="..\LaMa.Via.Auctus.Infrastructure\LaMa.Via.Auctus.Infrastructure.csproj" />
+        <ProjectReference Include="..\LaMa.Via.Auctus.Application\LaMa.Via.Auctus.Application.csproj"/>
+        <ProjectReference Include="..\LaMa.Via.Auctus.Infrastructure\LaMa.Via.Auctus.Infrastructure.csproj"/>
     </ItemGroup>
 
     <PropertyGroup>
@@ -31,5 +31,5 @@
         <FileVersion>$(BuildVersion)</FileVersion>
         <InformationalVersion>$(BuildVersion)</InformationalVersion>
     </PropertyGroup>
-    
+
 </Project>

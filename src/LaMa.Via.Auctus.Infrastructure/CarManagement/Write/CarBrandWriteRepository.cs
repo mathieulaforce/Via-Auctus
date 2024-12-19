@@ -3,14 +3,14 @@ using LaMa.Via.Auctus.Domain.CarManagement;
 using LaMa.Via.Auctus.Infrastructure.Abstractions;
 using Microsoft.EntityFrameworkCore;
 
-namespace LaMa.Via.Auctus.Infrastructure.CarManagement;
+namespace LaMa.Via.Auctus.Infrastructure.CarManagement.Write;
 
 internal class CarBrandWriteRepository : WriteRepository<CarBrand, CarBrandId>, ICarBrandWriteRepository
 {
     public CarBrandWriteRepository(ApplicationWriteDbContext context) : base(context)
     {
     }
- 
+
     public async Task<CarBrand?> FindByName(string name, CancellationToken cancellationToken = default)
     {
         return await Entity.FirstOrDefaultAsync(brand => brand.Name == name, cancellationToken);

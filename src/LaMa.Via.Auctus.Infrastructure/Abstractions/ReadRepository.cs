@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LaMa.Via.Auctus.Infrastructure.Abstractions;
 
-
 public abstract class ReadRepository<TEntity> : IReadRepository where TEntity : class
 {
     private readonly DbContext _context;

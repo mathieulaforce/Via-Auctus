@@ -1,18 +1,17 @@
-﻿using System.Reflection;
-using FakeItEasy;
+﻿using FakeItEasy;
 using LaMa.Via.Auctus.Application.Abstractions;
-using LaMa.Via.Auctus.Infrastructure; 
+using LaMa.Via.Auctus.Infrastructure;
 using MediatR;
 using NetArchTest.Rules;
 
 namespace LaMa.Via_Auctus.Infrastructure.Tests.Abstractions;
 
 public class WriteRepositoryTests
-{ 
+{
     [Fact]
     public void AllWriteRepositoryConstructorsCanBeInstantiatedWithWriteContext()
     {
-        Assembly infrastructureAssembly = typeof(ApplicationWriteDbContext).Assembly; 
+        var infrastructureAssembly = typeof(ApplicationWriteDbContext).Assembly;
         var publisher = A.Fake<IPublisher>();
         var context = ApplicationContextTestFactory.CreateWriteContext(publisher);
         var writeRepositories = Types.InAssembly(infrastructureAssembly)
@@ -26,7 +25,7 @@ public class WriteRepositoryTests
 
         foreach (var writeRepo in writeRepositories)
         {
-            Activator.CreateInstance(writeRepo,args:context );
+            Activator.CreateInstance(writeRepo, context);
         }
     }
 }

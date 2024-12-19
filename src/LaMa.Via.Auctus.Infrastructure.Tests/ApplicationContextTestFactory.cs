@@ -9,12 +9,13 @@ public static class ApplicationContextTestFactory
 {
     public static ApplicationWriteDbContext CreateWriteContext(IPublisher publisher)
     {
-        var dbContextOptions = new DbContextOptionsBuilder<ApplicationWriteDbContext>().UseInMemoryDatabase("WriteTest");
+        var dbContextOptions =
+            new DbContextOptionsBuilder<ApplicationWriteDbContext>().UseInMemoryDatabase("WriteTest");
         var context = new ApplicationWriteDbContext(dbContextOptions.Options, new DomainEventInterceptor(publisher));
         context.Database.EnsureCreated();
         return context;
     }
-    
+
     public static ApplicationReadDbContext CreateReadContext()
     {
         var dbContextOptions = new DbContextOptionsBuilder<ApplicationReadDbContext>().UseInMemoryDatabase("ReadTest");

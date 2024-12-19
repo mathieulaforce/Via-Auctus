@@ -1,9 +1,0 @@
-@carId = da25b825-fcbe-40a5-bd66-ac18b1956124
-
-##not found
-GET {{client.host.url}}/carmanagement/cars/bf07a9bd-54bd-4858-b730-50812ae610cb
-Accept: application/json
-
-###
-GET {{client.host.url}}/carmanagement/cars/{{carId}}
-Accept: application/json

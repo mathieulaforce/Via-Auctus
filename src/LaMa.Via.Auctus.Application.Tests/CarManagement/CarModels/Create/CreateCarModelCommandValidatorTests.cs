@@ -9,7 +9,7 @@ public class CreateCarModelsCommandValidatorTests
     public void GivenInvalidCommandWhenValidatingReturnsErrors()
     {
         var validator = new CreateCarModelCommandValidator();
-        var result = validator.Validate(new CreateCarModelCommand("", CarBrandId.Create(Guid.Empty), null));
+        var result = validator.Validate(new CreateCarModelCommand("", CarBrandId.Create(Guid.Empty)));
         result.IsValid.Should().BeFalse();
         result.Errors.Should().HaveCount(2);
         result.Errors.Select(x => x.PropertyName).Should()
@@ -20,7 +20,7 @@ public class CreateCarModelsCommandValidatorTests
     public void GivenValidCommandWhenValidatingReturnsValid()
     {
         var validator = new CreateCarModelCommandValidator();
-        var result = validator.Validate(new CreateCarModelCommand("Audi", CarBrandId.Create(Guid.NewGuid()), null));
+        var result = validator.Validate(new CreateCarModelCommand("Audi", CarBrandId.Create(Guid.NewGuid())));
         result.IsValid.Should().BeTrue();
     }
 }

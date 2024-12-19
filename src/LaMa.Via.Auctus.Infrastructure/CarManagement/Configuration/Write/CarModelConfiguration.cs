@@ -20,8 +20,7 @@ public class CarModelConfiguration : IEntityTypeConfiguration<CarModel>
 
         builder.OwnsOne(model => model.Image, imgBuilder =>
         {
-            imgBuilder.Property(img => img.Url)
-                .HasColumnName("ImageUrl")
+            RelationalPropertyBuilderExtensions.HasColumnName(imgBuilder.Property(img => img.Url), "ImageUrl")
                 .HasConversion(
                     url => url,
                     url => SupportedImage.Create(url).Value.Url);

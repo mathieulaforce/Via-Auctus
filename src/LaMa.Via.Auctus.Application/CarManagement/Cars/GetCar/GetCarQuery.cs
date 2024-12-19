@@ -5,5 +5,5 @@ namespace LaMa.Via.Auctus.Application.CarManagement.Cars.GetCar;
 
 public record GetCarQuery : IQuery<CarDao>
 {
-    public Guid CarId { get; set; }
+    public Guid CarId { get; init; }
 }

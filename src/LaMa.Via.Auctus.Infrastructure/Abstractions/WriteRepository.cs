@@ -2,9 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 
 namespace LaMa.Via.Auctus.Infrastructure.Abstractions;
- 
 
-public interface IWriteRepository<TEntity, TEntityId> : IWriteRepository  where TEntity : class
+public interface IWriteRepository<TEntity, TEntityId> : IWriteRepository where TEntity : class
 {
     Task Add(TEntity entity, CancellationToken cancellationToken = default);
     Task<TEntity?> Get(TEntityId id, CancellationToken cancellationToken = default);
@@ -25,9 +24,9 @@ internal abstract class WriteRepository<TEntity, TEntityId> : IWriteRepository<T
     {
         await Entity.AddAsync(entity, cancellationToken);
     }
-    
+
     public virtual async Task<TEntity?> Get(TEntityId id, CancellationToken cancellationToken = default)
     {
-       return await Entity.FindAsync(id, cancellationToken);
+        return await Entity.FindAsync(id, cancellationToken);
     }
 }
